@@ -15,7 +15,7 @@ import { DocsLink } from 'src/components'
 function ViewEmployee() {
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/todos/1').then((result) => {
+    fetch('http://192.168.1.108:5000/api/users').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData(resp)
@@ -36,31 +36,31 @@ function ViewEmployee() {
             <CTableHeaderCell scope="col">Phone No</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
-        <CTableBody>
-          {/* {data.map((items) => ( */}
-          <CTableRow>
-            <CTableHeaderCell scope="row">1</CTableHeaderCell>
-            <CTableDataCell> {data.title} </CTableDataCell>
-            <CTableDataCell> {data.userId} </CTableDataCell>
-            <CTableDataCell> {data.completed} </CTableDataCell>
-            <CTableDataCell> {data.title} </CTableDataCell>
-          </CTableRow>
-          {/* ))} */}
-          <CTableRow>
-            <CTableHeaderCell scope="row">2</CTableHeaderCell>
-            <CTableDataCell>Jacob</CTableDataCell>
-            <CTableDataCell>Thornton</CTableDataCell>
-            <CTableDataCell>@fat</CTableDataCell>
-            <CTableDataCell>1234</CTableDataCell>
-          </CTableRow>
-          <CTableRow>
-            <CTableHeaderCell scope="row">3</CTableHeaderCell>
-            <CTableDataCell>Larry the Bird</CTableDataCell>
-            <CTableDataCell>Chef</CTableDataCell>
-            <CTableDataCell>@twitter</CTableDataCell>
-            <CTableDataCell>1234</CTableDataCell>
-          </CTableRow>
-        </CTableBody>
+        {data.map((items) => (
+          <CTableBody key={items}>
+            <CTableRow>
+              <CTableHeaderCell scope="row">1</CTableHeaderCell>
+              <CTableDataCell> {items[0].users_name} </CTableDataCell>
+              <CTableDataCell> {items[0].usertype} </CTableDataCell>
+              <CTableDataCell> {items[0].NIC} </CTableDataCell>
+              <CTableDataCell> {items[0].phone_no} </CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+              <CTableHeaderCell scope="row">2</CTableHeaderCell>
+              <CTableDataCell> {items[1].users_name} </CTableDataCell>
+              <CTableDataCell> {items[1].usertype} </CTableDataCell>
+              <CTableDataCell> {items[1].NIC} </CTableDataCell>
+              <CTableDataCell> {items[1].phone_no} </CTableDataCell>
+            </CTableRow>
+            <CTableRow>
+              <CTableHeaderCell scope="row">3</CTableHeaderCell>
+              <CTableDataCell> {items[2].users_name} </CTableDataCell>
+              <CTableDataCell> {items[2].usertype} </CTableDataCell>
+              <CTableDataCell> {items[2].NIC} </CTableDataCell>
+              <CTableDataCell> {items[2].phone_no} </CTableDataCell>
+            </CTableRow>
+          </CTableBody>
+        ))}
       </CTable>
     </>
   )
