@@ -36,31 +36,17 @@ function ViewEmployee() {
             <CTableHeaderCell scope="col">Phone No</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
-        {data.map((items) => (
-          <CTableBody key={items}>
-            <CTableRow>
-              <CTableHeaderCell scope="row">1</CTableHeaderCell>
-              <CTableDataCell> {items[0].users_name} </CTableDataCell>
-              <CTableDataCell> {items[0].usertype} </CTableDataCell>
-              <CTableDataCell> {items[0].NIC} </CTableDataCell>
-              <CTableDataCell> {items[0].phone_no} </CTableDataCell>
+        <CTableBody>
+          {data.map((items, index) => (
+            <CTableRow key={index}>
+              <CTableHeaderCell scope="row"> {index + 1} </CTableHeaderCell>
+              <CTableDataCell> {items.users_name} </CTableDataCell>
+              <CTableDataCell> {items.usertype} </CTableDataCell>
+              <CTableDataCell> {items.NIC} </CTableDataCell>
+              <CTableDataCell> {items.phone_no} </CTableDataCell>
             </CTableRow>
-            <CTableRow>
-              <CTableHeaderCell scope="row">2</CTableHeaderCell>
-              <CTableDataCell> {items[1].users_name} </CTableDataCell>
-              <CTableDataCell> {items[1].usertype} </CTableDataCell>
-              <CTableDataCell> {items[1].NIC} </CTableDataCell>
-              <CTableDataCell> {items[1].phone_no} </CTableDataCell>
-            </CTableRow>
-            <CTableRow>
-              <CTableHeaderCell scope="row">3</CTableHeaderCell>
-              <CTableDataCell> {items[2].users_name} </CTableDataCell>
-              <CTableDataCell> {items[2].usertype} </CTableDataCell>
-              <CTableDataCell> {items[2].NIC} </CTableDataCell>
-              <CTableDataCell> {items[2].phone_no} </CTableDataCell>
-            </CTableRow>
-          </CTableBody>
-        ))}
+          ))}
+        </CTableBody>
       </CTable>
     </>
   )
