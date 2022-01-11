@@ -1,9 +1,30 @@
 import PropTypes from 'prop-types'
 import React, { useEffect, useState, createRef } from 'react'
 import classNames from 'classnames'
-import { CRow, CCol, CForm, CFormLabel, CFormInput, CFormCheck, CButton } from '@coreui/react'
+import {
+  // CAvatar,
+  CButton,
+  CButtonGroup,
+  CCard,
+  CCardBody,
+  CCardFooter,
+  CCardHeader,
+  CCol,
+  CHeaderText,
+  CImage,
+  CProgress,
+  CRow,
+  CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
+  CContainer,
+} from '@coreui/react'
 import { rgbToHex } from '@coreui/utils'
 import { DocsLink } from 'src/components'
+import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../components/index'
 
 const ThemeView = () => {
   const [color, setColor] = useState('rgb(255, 255, 255)')
@@ -77,112 +98,123 @@ function AddEmployee() {
   }
   return (
     <>
-      <form className="row g-3">
-        <div className="col-md-6">
-          <label htmlFor="inputEmail4" className="form-label">
-            First Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            value={fname}
-            onChange={(e) => {
-              setfname(e.target.value)
-            }}
-            id="inputEmail4"
-          ></input>
+      <div>
+        <AppSidebar />
+        <div className="wrapper d-flex flex-column min-vh-100 bg-light">
+          <AppHeader />
+          <div className="body flex-grow-1 px-3">
+            <CContainer lg>
+              <form className="row g-3">
+                <div className="col-md-6">
+                  <label htmlFor="inputEmail4" className="form-label">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={fname}
+                    onChange={(e) => {
+                      setfname(e.target.value)
+                    }}
+                    id="inputEmail4"
+                  ></input>
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="inputPassword4" className="form-label">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={lname}
+                    onChange={(e) => {
+                      setlname(e.target.value)
+                    }}
+                    id="inputPassword4"
+                  ></input>
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="inputCity" className="form-label">
+                    ID
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={username}
+                    onChange={(e) => {
+                      setuid(e.target.value)
+                    }}
+                    id="inputCity"
+                  ></input>
+                </div>
+                <div className="col-md-4">
+                  <label htmlFor="inputState" className="form-label">
+                    User Type
+                  </label>
+                  <select
+                    id="inputState"
+                    className="form-select"
+                    value={usertype}
+                    onChange={(e) => {
+                      setusertype(e.target.value)
+                    }}
+                  >
+                    <option selected>Choose...</option>
+                    <option>admin</option>
+                    <option>chef</option>
+                  </select>
+                </div>
+                <div className="col-md-2">
+                  <label htmlFor="inputZip" className="form-label">
+                    Phone
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={phone_no}
+                    id="inputZip"
+                    onChange={(e) => {
+                      setphone_no(e.target.value)
+                    }}
+                  ></input>
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="inputCity" className="form-label">
+                    CNIC
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={NIC}
+                    onChange={(e) => {
+                      setNIC(e.target.value)
+                    }}
+                    id="inputCity"
+                  ></input>
+                  <label htmlFor="inputPassword4" className="form-label">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    value={password}
+                    onChange={(e) => {
+                      setpassword(e.target.value)
+                    }}
+                    id="inputPassword4"
+                  ></input>
+                </div>
+                <div className="col-12">
+                  <button type="submit" className="btn btn-primary" onClick={saveEmp}>
+                    Add Employee
+                  </button>
+                </div>
+              </form>
+            </CContainer>
+          </div>
+          <AppFooter />
         </div>
-        <div className="col-md-6">
-          <label htmlFor="inputPassword4" className="form-label">
-            Last Name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            value={lname}
-            onChange={(e) => {
-              setlname(e.target.value)
-            }}
-            id="inputPassword4"
-          ></input>
-        </div>
-        <div className="col-md-6">
-          <label htmlFor="inputCity" className="form-label">
-            ID
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            value={username}
-            onChange={(e) => {
-              setuid(e.target.value)
-            }}
-            id="inputCity"
-          ></input>
-        </div>
-        <div className="col-md-4">
-          <label htmlFor="inputState" className="form-label">
-            User Type
-          </label>
-          <select
-            id="inputState"
-            className="form-select"
-            value={usertype}
-            onChange={(e) => {
-              setusertype(e.target.value)
-            }}
-          >
-            <option selected>Choose...</option>
-            <option>admin</option>
-            <option>chef</option>
-          </select>
-        </div>
-        <div className="col-md-2">
-          <label htmlFor="inputZip" className="form-label">
-            Phone
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            value={phone_no}
-            id="inputZip"
-            onChange={(e) => {
-              setphone_no(e.target.value)
-            }}
-          ></input>
-        </div>
-        <div className="col-md-6">
-          <label htmlFor="inputCity" className="form-label">
-            CNIC
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            value={NIC}
-            onChange={(e) => {
-              setNIC(e.target.value)
-            }}
-            id="inputCity"
-          ></input>
-          <label htmlFor="inputPassword4" className="form-label">
-            Password
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            value={password}
-            onChange={(e) => {
-              setpassword(e.target.value)
-            }}
-            id="inputPassword4"
-          ></input>
-        </div>
-        <div className="col-12">
-          <button type="submit" className="btn btn-primary" onClick={saveEmp}>
-            Add Employee
-          </button>
-        </div>
-      </form>
+      </div>
     </>
   )
 }

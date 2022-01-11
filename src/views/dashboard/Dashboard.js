@@ -1,5 +1,5 @@
-import React, { lazy } from 'react'
-
+import React, { lazy, useEffect } from 'react'
+import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../components/index'
 import {
   // CAvatar,
   CButton,
@@ -19,6 +19,7 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CContainer,
 } from '@coreui/react'
 import { CChartLine } from '@coreui/react-chartjs'
 import { getStyle, hexToRgba } from '@coreui/utils'
@@ -53,7 +54,20 @@ const Dashboard = () => {
 
   return (
     <>
-      <CHeaderText align="middle">Welcome to the DineEase System</CHeaderText>
+      <div>
+        <AppSidebar />
+        <div className="wrapper d-flex flex-column min-vh-100 bg-light">
+          <AppHeader />
+          <div className="body flex-grow-1 px-3">
+            <CContainer lg>
+              <CHeaderText className="m5" align="middle">
+                Welcome to the DineEase System
+              </CHeaderText>
+            </CContainer>
+          </div>
+          <AppFooter />
+        </div>
+      </div>
       {/* <CImage align="start" rounded src="/src/assets/logo.png" width={200} height={200} /> */}
     </>
   )
