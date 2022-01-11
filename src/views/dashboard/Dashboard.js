@@ -21,6 +21,7 @@ import {
   CTableRow,
   CContainer,
 } from '@coreui/react'
+import './dashboard.css'
 import { CChartLine } from '@coreui/react-chartjs'
 import { getStyle, hexToRgba } from '@coreui/utils'
 import CIcon from '@coreui/icons-react'
@@ -59,8 +60,8 @@ const Dashboard = () => {
         <div className="wrapper d-flex flex-column min-vh-100 bg-light">
           <AppHeader />
           <div className="body flex-grow-1 px-3">
-            <CContainer lg>
-              <CHeaderText className="m5" align="middle">
+            <CContainer>
+              <CHeaderText className="welcome ml-xl-3" align="middle">
                 Welcome to the DineEase System
               </CHeaderText>
             </CContainer>

@@ -9,7 +9,7 @@ import { AppSidebarNav } from './AppSidebarNav'
 import { logoNegative } from 'src/assets/brand/logo-negative'
 import logos from 'src/assets/logo.png'
 import { sygnet } from 'src/assets/brand/sygnet'
-
+import '../views/dashboard/dashboard.css'
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
 
@@ -31,7 +31,7 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CHeaderText color="">DineEase System</CHeaderText>
+        <CHeaderText className="topleft"> DineEase System </CHeaderText>
         {/* <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} /> */}
         {/* <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} /> */}
       </CSidebarBrand>

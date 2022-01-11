@@ -76,6 +76,37 @@ function AddEmployee() {
   const [NIC, setNIC] = useState('')
   const [password, setpassword] = useState('')
   const [username, setuid] = useState('')
+  const [userErr, setuserErr] = useState(false)
+
+  function loginHandler(e) {
+    if (/^[a-zA-Z]*$/g.test(fname))
+      if (/^[a-zA-Z]*$/g.test(lname))
+        if (/^[1-9]{1}[0-9]{9}$/g.test(phone_no))
+          if (/^\d{13}$/g.test(NIC))
+            if (/^[A-Za-z0-9]+$/g.test(username)) saveEmp()
+            else {
+              alert(username + ' should be alphabetic or alphabetic with numeric')
+              return false
+            }
+          else {
+            alert(NIC + ' should be of 13 digits with no -')
+            return false
+          }
+        else {
+          alert(phone_no + ' should be of 10 digits having no initial 0')
+          return false
+        }
+      else {
+        alert(lname + ' should be alphabetic')
+        return false
+      }
+    else {
+      alert(fname + ' should be alphabetic')
+      return false
+    }
+    e.preventDefault()
+  }
+
   function saveEmp() {
     const users_name = fname + ' ' + lname
     let x = { phone_no, password, usertype, NIC, username, users_name }
@@ -104,7 +135,7 @@ function AddEmployee() {
           <AppHeader />
           <div className="body flex-grow-1 px-3">
             <CContainer lg>
-              <form className="row g-3">
+              <form className="row g-3" onSubmit={loginHandler}>
                 <div className="col-md-6">
                   <label htmlFor="inputEmail4" className="form-label">
                     First Name
@@ -112,6 +143,8 @@ function AddEmployee() {
                   <input
                     type="text"
                     className="form-control"
+                    required
+                    pattern="[A-Za-z]+"
                     value={fname}
                     onChange={(e) => {
                       setfname(e.target.value)
@@ -126,6 +159,8 @@ function AddEmployee() {
                   <input
                     type="text"
                     className="form-control"
+                    required
+                    pattern="[A-Za-z]+"
                     value={lname}
                     onChange={(e) => {
                       setlname(e.target.value)
@@ -140,6 +175,8 @@ function AddEmployee() {
                   <input
                     type="text"
                     className="form-control"
+                    required
+                    pattern="[A-Za-z0-9]+"
                     value={username}
                     onChange={(e) => {
                       setuid(e.target.value)
@@ -171,6 +208,9 @@ function AddEmployee() {
                   <input
                     type="text"
                     className="form-control"
+                    required
+                    pattern="[1-9]{1}[0-9]{9}"
+                    title="Enter 10 digit numbers without 0"
                     value={phone_no}
                     id="inputZip"
                     onChange={(e) => {
@@ -185,6 +225,9 @@ function AddEmployee() {
                   <input
                     type="text"
                     className="form-control"
+                    required
+                    pattern="\d{13}"
+                    title="Enter 13 Digits without -"
                     value={NIC}
                     onChange={(e) => {
                       setNIC(e.target.value)
@@ -205,7 +248,7 @@ function AddEmployee() {
                   ></input>
                 </div>
                 <div className="col-12">
-                  <button type="submit" className="btn btn-primary" onClick={saveEmp}>
+                  <button type="submit" className="btn btn-primary">
                     Add Employee
                   </button>
                 </div>
