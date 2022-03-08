@@ -17,7 +17,7 @@ import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../component
 function ViewMenu() {
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/users').then((result) => {
+    fetch('http://192.168.1.108:5000/api/amenu').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData(resp)
@@ -48,10 +48,10 @@ function ViewMenu() {
                   {data.map((items, index) => (
                     <CTableRow key={index}>
                       <CTableHeaderCell scope="row"> {index + 1} </CTableHeaderCell>
-                      <CTableDataCell> {items.users_name} </CTableDataCell>
-                      <CTableDataCell> {items.usertype} </CTableDataCell>
-                      <CTableDataCell> {items.NIC} </CTableDataCell>
-                      <CTableDataCell> {items.phone_no} </CTableDataCell>
+                      <CTableDataCell> {items.item_name} </CTableDataCell>
+                      <CTableDataCell> {items.item_price} </CTableDataCell>
+                      <CTableDataCell> {items.menu_status} </CTableDataCell>
+                      <CTableDataCell> {items.item_description} </CTableDataCell>
                     </CTableRow>
                   ))}
                 </CTableBody>

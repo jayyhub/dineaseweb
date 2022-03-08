@@ -17,7 +17,7 @@ import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../component
 function ViewInv() {
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/users').then((result) => {
+    fetch('http://192.168.1.108:5000/api/inventory').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData(resp)
@@ -49,10 +49,11 @@ function ViewInv() {
                   {data.map((items, index) => (
                     <CTableRow key={index}>
                       <CTableHeaderCell scope="row"> {index + 1} </CTableHeaderCell>
-                      <CTableDataCell> {items.users_name} </CTableDataCell>
-                      <CTableDataCell> {items.usertype} </CTableDataCell>
-                      <CTableDataCell> {items.NIC} </CTableDataCell>
-                      <CTableDataCell> {items.phone_no} </CTableDataCell>
+                      <CTableDataCell> {items.inventory_name} </CTableDataCell>
+                      <CTableDataCell> {items.date_of_purchase} </CTableDataCell>
+                      <CTableDataCell> {items.cost} </CTableDataCell>
+                      <CTableDataCell> {items.quantity} </CTableDataCell>
+                      <CTableDataCell> {items.total_cost} </CTableDataCell>
                     </CTableRow>
                   ))}
                 </CTableBody>

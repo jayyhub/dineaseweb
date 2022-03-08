@@ -69,51 +69,62 @@ ThemeColor.propTypes = {
 }
 
 function AddInventory() {
-  const [fname, setfname] = useState('')
-  const [lname, setlname] = useState('')
-  const [phone_no, setphone_no] = useState('')
-  const [usertype, setusertype] = useState('')
-  const [NIC, setNIC] = useState('')
-  const [password, setpassword] = useState('')
-  const [username, setuid] = useState('')
+  const [inventory_name, setiname] = useState('')
+  const [date_of_purchase, setdate] = useState('')
+  const [cost1, setcost] = useState('')
+  const [quantity1, setquantity] = useState('')
+  const [total_cost, settcost] = useState('')
+  const [category_id, setctype] = useState('')
   const [userErr, setuserErr] = useState(false)
 
-  function loginHandler(e) {
-    if (/^[a-zA-Z]*$/g.test(fname))
-      if (/^[a-zA-Z]*$/g.test(lname))
-        if (/^[1-9]{1}[0-9]{9}$/g.test(phone_no))
-          if (/^\d{13}$/g.test(NIC))
-            if (/^[A-Za-z0-9]+$/g.test(username)) saveEmp()
-            else {
-              alert(username + ' should be alphabetic or alphabetic with numeric')
-              return false
-            }
-          else {
-            alert(NIC + ' should be of 13 digits with no -')
-            return false
-          }
-        else {
-          alert(phone_no + ' should be of 10 digits having no initial 0')
-          return false
-        }
-      else {
-        alert(lname + ' should be alphabetic')
-        return false
-      }
-    else {
-      alert(fname + ' should be alphabetic')
-      return false
-    }
-    e.preventDefault()
-  }
+  // function loginHandler(e) {
+  //   if (/^[a-zA-Z]*$/g.test(fname))
+  //     if (/^[a-zA-Z]*$/g.test(lname))
+  //       if (/^[1-9]{1}[0-9]{9}$/g.test(phone_no))
+  //         if (/^\d{13}$/g.test(NIC))
+  //           if (/^[A-Za-z0-9]+$/g.test(username)) saveEmp()
+  //           else {
+  //             alert(username + ' should be alphabetic or alphabetic with numeric')
+  //             return false
+  //           }
+  //         else {
+  //           alert(NIC + ' should be of 13 digits with no -')
+  //           return false
+  //         }
+  //       else {
+  //         alert(phone_no + ' should be of 10 digits having no initial 0')
+  //         return false
+  //       }
+  //     else {
+  //       alert(lname + ' should be alphabetic')
+  //       return false
+  //     }
+  //   else {
+  //     alert(fname + ' should be alphabetic')
+  //     return false
+  //   }
+  //   e.preventDefault()
+  // }
+
+  const [data, setData] = useState([])
+  useEffect(() => {
+    fetch('http://192.168.1.108:5000/api/icategory').then((result) => {
+      result.json().then((resp) => {
+        //console.warn('result', resp)
+        setData(resp)
+      })
+    })
+  }, [])
 
   function saveEmp() {
-    const users_name = fname + ' ' + lname
-    let x = { phone_no, password, usertype, NIC, username, users_name }
     //x.json()
     //console.warn(JSON.stringify(x))
-    let data = { phone_no, password, usertype, NIC, username, users_name }
-    fetch('http://192.168.1.108:5000/api/users', {
+    const cost = Number(cost1)
+    const quantity = Number(quantity1)
+    let data = { inventory_name, date_of_purchase, cost, quantity, total_cost, category_id }
+    console.log('Hello')
+    console.log(data)
+    fetch('http://192.168.1.108:5000/api/inventory', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -135,7 +146,7 @@ function AddInventory() {
           <AppHeader />
           <div className="body flex-grow-1 px-3">
             <CContainer lg>
-              <form className="row g-3" onSubmit={loginHandler}>
+              <form className="row g-3" onSubmit={saveEmp}>
                 <div className="col-md-6">
                   <label htmlFor="inputEmail4" className="form-label">
                     Inventory Name
@@ -144,10 +155,10 @@ function AddInventory() {
                     type="text"
                     className="form-control"
                     required
-                    pattern="[A-Za-z]+"
-                    value={fname}
+                    //pattern="[A-Za-z]+"
+                    value={inventory_name}
                     onChange={(e) => {
-                      setfname(e.target.value)
+                      setiname(e.target.value)
                     }}
                     id="inputEmail4"
                   ></input>
@@ -160,12 +171,13 @@ function AddInventory() {
                     type="text"
                     className="form-control"
                     required
-                    pattern="[1-9]{1}[0-9]{9}"
+                    //pattern="[1-9]{1}[0-9]{9}"
                     title="Enter 10 digit numbers without 0"
-                    value={phone_no}
+                    value={cost1}
                     id="inputZip"
                     onChange={(e) => {
-                      setphone_no(e.target.value)
+                      settcost(e.target.value * quantity1)
+                      setcost(e.target.value)
                     }}
                   ></input>
                 </div>
@@ -177,12 +189,13 @@ function AddInventory() {
                     type="text"
                     className="form-control"
                     required
-                    pattern="[1-9]{1}[0-9]{9}"
+                    //pattern="[1-9]{1}[0-9]{9}"
                     title="Enter 10 digit numbers without 0"
-                    value={phone_no}
+                    value={quantity1}
                     id="inputZip"
                     onChange={(e) => {
-                      setphone_no(e.target.value)
+                      settcost(e.target.value * cost1)
+                      setquantity(e.target.value)
                     }}
                   ></input>
                 </div>
@@ -194,29 +207,54 @@ function AddInventory() {
                     type="text"
                     className="form-control"
                     required
-                    pattern="[1-9]{1}[0-9]{9}"
+                    //pattern="[1-9]{1}[0-9]{9}"
                     title="Enter 10 digit numbers without 0"
-                    value={phone_no}
+                    value={total_cost}
                     id="inputZip"
                     onChange={(e) => {
-                      setphone_no(e.target.value)
+                      settcost(e.target.value)
                     }}
+                    disabled
                   ></input>
+                </div>
+                <div className="col-md-4">
+                  <label htmlFor="inputState" className="form-label">
+                    Inventory Category
+                  </label>
+                  <select
+                    id="inputState"
+                    className="form-select"
+                    value={category_id}
+                    onChange={(e) => {
+                      data.map((item) => {
+                        if (item.category_name === e.target.value) {
+                          console.log('Hello')
+                          console.log(item.category_id)
+                          setctype(item.category_id)
+                        }
+                      })
+                    }}
+                  >
+                    <option selected>Choose...</option>
+                    {data.map((items, index) => (
+                      <option key={index}> {items.category_name} </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="col-md-2">
                   <label htmlFor="inputZip" className="form-label">
                     Date of Purchase
                   </label>
                   <input
-                    type="text"
+                    type="date"
                     className="form-control"
                     required
-                    pattern="[1-9]{1}[0-9]{9}"
+                    //pattern="[1-9]{1}[0-9]{9}"
                     title="Enter 10 digit numbers without 0"
-                    value={phone_no}
+                    value={date_of_purchase}
                     id="inputZip"
                     onChange={(e) => {
-                      setphone_no(e.target.value)
+                      setdate(e.target.value)
                     }}
                   ></input>
                 </div>

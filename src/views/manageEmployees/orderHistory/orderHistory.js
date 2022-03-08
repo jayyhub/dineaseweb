@@ -1,4 +1,6 @@
 import React from 'react'
+import './orderHistory.css'
+import ReactDOM from 'react-dom'
 import {
   CCard,
   CCardHeader,
@@ -21,7 +23,7 @@ import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../component
 function Orderhistory() {
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/users').then((result) => {
+    fetch('http://192.168.1.108:5000/api/orders').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData(resp)
@@ -41,7 +43,7 @@ function Orderhistory() {
               <CTable striped>
                 <CTableHead>
                   <CTableRow>
-                    <CTableHeaderCell scope="col">OrderID</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Sno</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Order Time</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Total Amount</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Payment Method</CTableHeaderCell>
@@ -50,17 +52,14 @@ function Orderhistory() {
                     <CTableHeaderCell scope="col">Table no</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Chef</CTableHeaderCell>
                     <CTableHeaderCell scope="col">
-                      <CDropdown className="mt-2">
-                        <CDropdownToggle color="secondary" size="sm">
-                          Order Status
-                        </CDropdownToggle>
-                        <CDropdownMenu>
-                          <CDropdownItem>All</CDropdownItem>
-                          <CDropdownItem>Ready</CDropdownItem>
-                          <CDropdownItem>Assigned</CDropdownItem>
-                          <CDropdownItem>Served</CDropdownItem>
-                        </CDropdownMenu>
-                      </CDropdown>
+                      <select>
+                        <option selected value="all">
+                          All
+                        </option>
+                        <option value="ready">Ready</option>
+                        <option value="ready">Assigned</option>
+                        <option value="ready">Not Assigned</option>
+                      </select>
                     </CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -68,10 +67,14 @@ function Orderhistory() {
                   {data.map((items, index) => (
                     <CTableRow key={index}>
                       <CTableHeaderCell scope="row"> {index + 1} </CTableHeaderCell>
+                      <CTableDataCell> {items.order_time} </CTableDataCell>
+                      <CTableDataCell> {items.total_price} </CTableDataCell>
+                      <CTableDataCell> {items.payment_mode} </CTableDataCell>
+                      <CTableDataCell> {items.rating} </CTableDataCell>
+                      <CTableDataCell> {items.review} </CTableDataCell>
+                      <CTableDataCell> {items.table_id} </CTableDataCell>
                       <CTableDataCell> {items.users_name} </CTableDataCell>
-                      <CTableDataCell> {items.usertype} </CTableDataCell>
-                      <CTableDataCell> {items.NIC} </CTableDataCell>
-                      <CTableDataCell> {items.phone_no} </CTableDataCell>
+                      <CTableDataCell> {items.order_status} </CTableDataCell>
                     </CTableRow>
                   ))}
                 </CTableBody>

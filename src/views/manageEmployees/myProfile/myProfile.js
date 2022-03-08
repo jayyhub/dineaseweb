@@ -29,7 +29,7 @@ function Profile() {
               <h1> My Profile </h1>
             </div>
             <div className="clearfix float-sm-left">
-              <CImage align="center" rounded src="/myProfile/user.jpg" width={300} height={300} />
+              <CImage align="center" rounded src="./user.jpg" width={300} height={300} />
             </div>
             <br />
             <br />

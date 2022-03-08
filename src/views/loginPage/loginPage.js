@@ -18,6 +18,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 export default function Login() {
   const [username, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [res, setres] = useState('')
   const history = useHistory()
 
   function validateForm() {
@@ -30,15 +31,19 @@ export default function Login() {
 
   useEffect(() => {
     if (localStorage.getItem('user-info')) {
-      history.push('/dashboard')
+      history.push({
+        pathname: '/dashboard',
+        state: { user: res },
+      })
     }
   })
 
   async function login() {
+    const usertype = 'admin'
     console.warn(username, password)
-    let item = { username, password }
+    let item = { username, password, usertype }
     let x = JSON.stringify(item)
-    console.log(x)
+    //console.log(x)
     let result = await fetch('http://192.168.1.108:5000/api/user', {
       method: 'POST',
       headers: {
@@ -48,9 +53,13 @@ export default function Login() {
       body: JSON.stringify(item),
     })
     result = await result.json()
-    console.log(result)
+    console.log(result[0])
+    setres(result[0])
     localStorage.setItem('user-info', JSON.stringify(result))
-    history.push('/dashboard')
+    history.push({
+      pathname: '/dashboard',
+      state: { user: res },
+    })
   }
 
   return (

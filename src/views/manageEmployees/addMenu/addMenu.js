@@ -69,51 +69,78 @@ ThemeColor.propTypes = {
 }
 
 function AddMenu() {
-  const [fname, setfname] = useState('')
-  const [lname, setlname] = useState('')
-  const [phone_no, setphone_no] = useState('')
-  const [usertype, setusertype] = useState('')
-  const [NIC, setNIC] = useState('')
-  const [password, setpassword] = useState('')
-  const [username, setuid] = useState('')
+  const [item_name, setitemname] = useState('')
+  const [item_description, setdesc] = useState('')
+  const [menu_status, setstatus] = useState('')
+  const [category_id, setcat] = useState('')
+  const [icategory_id, setfood] = useState('')
+  const [item_price1, setprice] = useState('')
   const [userErr, setuserErr] = useState(false)
 
-  function loginHandler(e) {
-    if (/^[a-zA-Z]*$/g.test(fname))
-      if (/^[a-zA-Z]*$/g.test(lname))
-        if (/^[1-9]{1}[0-9]{9}$/g.test(phone_no))
-          if (/^\d{13}$/g.test(NIC))
-            if (/^[A-Za-z0-9]+$/g.test(username)) saveEmp()
-            else {
-              alert(username + ' should be alphabetic or alphabetic with numeric')
-              return false
-            }
-          else {
-            alert(NIC + ' should be of 13 digits with no -')
-            return false
-          }
-        else {
-          alert(phone_no + ' should be of 10 digits having no initial 0')
-          return false
-        }
-      else {
-        alert(lname + ' should be alphabetic')
-        return false
-      }
-    else {
-      alert(fname + ' should be alphabetic')
-      return false
-    }
-    e.preventDefault()
-  }
+  const [data1, setData1] = useState([])
+  useEffect(() => {
+    fetch('http://192.168.1.108:5000/api/foodcategories').then((result) => {
+      result.json().then((resp) => {
+        //console.warn('result', resp)
+        setData1(resp)
+      })
+    })
+  }, [])
+
+  const [data2, setData2] = useState([])
+  useEffect(() => {
+    fetch('http://192.168.1.108:5000/api/itemcategories').then((result) => {
+      result.json().then((resp) => {
+        //console.warn('result', resp)
+        setData2(resp)
+      })
+    })
+  }, [])
+  // function loginHandler(e) {
+  //   if (/^[a-zA-Z]*$/g.test(fname))
+  //     if (/^[a-zA-Z]*$/g.test(lname))
+  //       if (/^[1-9]{1}[0-9]{9}$/g.test(phone_no))
+  //         if (/^\d{13}$/g.test(NIC))
+  //           if (/^[A-Za-z0-9]+$/g.test(username)) saveEmp()
+  //           else {
+  //             alert(username + ' should be alphabetic or alphabetic with numeric')
+  //             return false
+  //           }
+  //         else {
+  //           alert(NIC + ' should be of 13 digits with no -')
+  //           return false
+  //         }
+  //       else {
+  //         alert(phone_no + ' should be of 10 digits having no initial 0')
+  //         return false
+  //       }
+  //     else {
+  //       alert(lname + ' should be alphabetic')
+  //       return false
+  //     }
+  //   else {
+  //     alert(fname + ' should be alphabetic')
+  //     return false
+  //   }
+  //   e.preventDefault()
+  // }
 
   function saveEmp() {
-    const users_name = fname + ' ' + lname
-    let x = { phone_no, password, usertype, NIC, username, users_name }
     //x.json()
     //console.warn(JSON.stringify(x))
-    let data = { phone_no, password, usertype, NIC, username, users_name }
-    fetch('http://192.168.1.108:5000/api/users', {
+    const item_price = Number(item_price1)
+    const image_id = 1
+    let data = {
+      item_name,
+      item_price,
+      item_description,
+      menu_status,
+      image_id,
+      category_id,
+      icategory_id,
+    }
+    console.log(data)
+    fetch('http://192.168.1.108:5000/api/menu', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -135,7 +162,7 @@ function AddMenu() {
           <AppHeader />
           <div className="body flex-grow-1 px-3">
             <CContainer lg>
-              <form className="row g-3" onSubmit={loginHandler}>
+              <form className="row g-3" onSubmit={saveEmp}>
                 <div className="col-md-6">
                   <label htmlFor="inputEmail4" className="form-label">
                     Item Name
@@ -144,10 +171,10 @@ function AddMenu() {
                     type="text"
                     className="form-control"
                     required
-                    pattern="[A-Za-z]+"
-                    value={fname}
+                    //pattern="[A-Za-z]+"
+                    value={item_name}
                     onChange={(e) => {
-                      setfname(e.target.value)
+                      setitemname(e.target.value)
                     }}
                     id="inputEmail4"
                   ></input>
@@ -160,24 +187,24 @@ function AddMenu() {
                     type="text"
                     className="form-control"
                     required
-                    pattern="[A-Za-z]+"
-                    value={lname}
+                    //pattern="[A-Za-z]+"
+                    value={item_description}
                     onChange={(e) => {
-                      setlname(e.target.value)
+                      setdesc(e.target.value)
                     }}
                     id="inputPassword4"
                   ></input>
                 </div>
                 <div className="col-md-4">
                   <label htmlFor="inputState" className="form-label">
-                    Status
+                    Menu Status
                   </label>
                   <select
                     id="inputState"
                     className="form-select"
-                    value={usertype}
+                    value={menu_status}
                     onChange={(e) => {
-                      setusertype(e.target.value)
+                      setstatus(e.target.value)
                     }}
                   >
                     <option selected>Choose...</option>
@@ -185,20 +212,68 @@ function AddMenu() {
                     <option>not available</option>
                   </select>
                 </div>
+                <div className="col-md-4">
+                  <label htmlFor="inputState" className="form-label">
+                    Item Category
+                  </label>
+                  <select
+                    id="inputState"
+                    className="form-select"
+                    value={category_id}
+                    onChange={(e) => {
+                      data2.map((item) => {
+                        if (item.icategory_name === e.target.value) {
+                          console.log('Hello')
+                          console.log(item.icategory_id)
+                          setcat(item.icategory_id)
+                        }
+                      })
+                    }}
+                  >
+                    <option selected>Choose...</option>
+                    {data2.map((items, index) => (
+                      <option key={index}> {items.icategory_name} </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-md-4">
+                  <label htmlFor="inputState" className="form-label">
+                    Food Category
+                  </label>
+                  <select
+                    id="inputState"
+                    className="form-select"
+                    value={icategory_id}
+                    onChange={(e) => {
+                      data1.map((item) => {
+                        if (item.category_name === e.target.value) {
+                          console.log('Hello')
+                          console.log(item.category_id)
+                          setfood(item.category_id)
+                        }
+                      })
+                    }}
+                  >
+                    <option selected>Choose...</option>
+                    {data1.map((items, index) => (
+                      <option key={index}> {items.category_name} </option>
+                    ))}
+                  </select>
+                </div>
                 <div className="col-md-2">
                   <label htmlFor="inputZip" className="form-label">
-                    Price
+                    Item Price
                   </label>
                   <input
                     type="text"
                     className="form-control"
                     required
-                    pattern="[1-9]{1}[0-9]{9}"
+                    //pattern="[1-9]{1}[0-9]{9}"
                     title="Enter 10 digit numbers without 0"
-                    value={phone_no}
+                    value={item_price1}
                     id="inputZip"
                     onChange={(e) => {
-                      setphone_no(e.target.value)
+                      setprice(e.target.value)
                     }}
                   ></input>
                 </div>

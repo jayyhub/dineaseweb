@@ -17,7 +17,7 @@ import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../component
 function TableStatus() {
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/users').then((result) => {
+    fetch('http://192.168.1.108:5000/api/tables').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData(resp)
@@ -38,7 +38,7 @@ function TableStatus() {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">Table No</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Person</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">No of Chairs</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -46,8 +46,8 @@ function TableStatus() {
                   {data.map((items, index) => (
                     <CTableRow key={index}>
                       <CTableHeaderCell scope="row"> {index + 1} </CTableHeaderCell>
-                      <CTableDataCell> {items.users_name} </CTableDataCell>
-                      <CTableDataCell> {items.usertype} </CTableDataCell>
+                      <CTableDataCell> {items.No_of_chairs} </CTableDataCell>
+                      <CTableDataCell> {items.table_status} </CTableDataCell>
                     </CTableRow>
                   ))}
                 </CTableBody>

@@ -48,11 +48,12 @@ import {
   cilUserFemale,
 } from '@coreui/icons'
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   const random = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
-
+  console.log('page2')
+  console.log(props)
   return (
     <>
       <div>
