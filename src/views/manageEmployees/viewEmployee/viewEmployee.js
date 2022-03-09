@@ -24,9 +24,9 @@ function ViewEmployee(props) {
       })
     })
   }, [])
-  console.warn(data)
-  console.log('lllllllllllllllllllllllllllllllllllllll')
-  console.log(props)
+  //console.warn(data)
+  //console.log('lllllllllllllllllllllllllllllllllllllll')
+  //console.log(props)
   //const viewEmployee = () => {
   return (
     <>

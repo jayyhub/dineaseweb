@@ -18,6 +18,21 @@ import { DocsLink } from 'src/components'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../components/index'
 import CIcon from '@coreui/icons-react'
 function Profile() {
+  const username = localStorage.getItem('user-info')
+  const id = Number(username[9])
+  const [data, setData] = useState('')
+  // console.log('x')
+  // console.log(id)
+
+  useEffect(() => {
+    fetch(`http://192.168.1.108:5000/api/user/${id}`).then((result) => {
+      result.json().then((resp) => {
+        console.warn('result', resp[0])
+        setData(resp[0])
+      })
+    })
+  }, [])
+
   return (
     <>
       <div>
@@ -29,7 +44,7 @@ function Profile() {
               <h1> My Profile </h1>
             </div>
             <div className="clearfix float-sm-left">
-              <CImage align="center" rounded src="./user.jpg" width={300} height={300} />
+              <CImage align="center" rounded src="user.jpg" width={300} height={300} />
             </div>
             <br />
             <br />
@@ -39,7 +54,7 @@ function Profile() {
                 <h4 className="parrot"> Name: </h4>
               </div>
               <div>
-                <h4 className="teddy"> Muhammad Jawwad </h4>
+                <h4 className="teddy"> {data.users_name} </h4>
               </div>
               <br />
               <br />
@@ -47,7 +62,7 @@ function Profile() {
                 <h4 className="parrot">Username: </h4>
               </div>
               <div>
-                <h4 className="teddy"> mjayy1 </h4>
+                <h4 className="teddy"> {data.username} </h4>
               </div>
               <br />
               <br />

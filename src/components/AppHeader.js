@@ -27,12 +27,15 @@ const AppHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
   const history = useHistory()
+  const username = localStorage.getItem('user-info')
+  const uname = username.substring(128, 143)
   function logOut() {
     console.log('inside')
     localStorage.clear()
     history.push('/')
   }
-
+  //console.log('kkk')
+  //console.log(username.substring(137, 138))
   return (
     <CHeader position="sticky" className="mb-4">
       <CContainer fluid>
@@ -52,7 +55,7 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>
           <CNavItem className="avatartext">
-            <CNavbarText> Jawwad123 </CNavbarText>
+            <CNavbarText> {uname} </CNavbarText>
           </CNavItem>
           <CNavItem>
             <CAvatar color="secondary" size="lg" className="avatar">

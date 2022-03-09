@@ -77,6 +77,9 @@ function AddInventory() {
   const [category_id, setctype] = useState('')
   const [userErr, setuserErr] = useState(false)
 
+  function editproduct(inventory_id) {
+    console.log(inventory_id)
+  }
   // function loginHandler(e) {
   //   if (/^[a-zA-Z]*$/g.test(fname))
   //     if (/^[a-zA-Z]*$/g.test(lname))

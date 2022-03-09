@@ -31,6 +31,23 @@ function Orderhistory() {
     })
   }, [])
   console.warn(data)
+
+  function temp() {
+    fetch('http://192.168.1.108:5000/api/orders').then((result) => {
+      result.json().then((resp) => {
+        //console.warn('result', resp)
+        setData(resp)
+      })
+    })
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      temp()
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [])
+
   //const viewEmployee = () => {
   return (
     <>
