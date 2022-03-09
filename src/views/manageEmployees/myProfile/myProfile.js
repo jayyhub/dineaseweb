@@ -44,7 +44,13 @@ function Profile() {
               <h1> My Profile </h1>
             </div>
             <div className="clearfix float-sm-left">
-              <CImage align="center" rounded src="user.jpg" width={300} height={300} />
+              <CImage
+                align="center"
+                rounded
+                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png"
+                width={300}
+                height={300}
+              />
             </div>
             <br />
             <br />
@@ -70,7 +76,7 @@ function Profile() {
                 <h4 className="parrot">CNIC: </h4>
               </div>
               <div>
-                <h4 className="teddy"> 42101789456122 </h4>
+                <h4 className="teddy"> {data.NIC} </h4>
               </div>
               <br />
               <br />
@@ -78,7 +84,7 @@ function Profile() {
                 <h4 className="parrot">Phone No: </h4>
               </div>
               <div>
-                <h4 className="teddy"> 03114629584 </h4>
+                <h4 className="teddy"> {data.phone_no} </h4>
               </div>
               <br />
               <br />
@@ -86,7 +92,7 @@ function Profile() {
                 <h4 className="parrot">User Type: </h4>
               </div>
               <div>
-                <h4 className="teddy"> Chef </h4>
+                <h4 className="teddy"> {data.usertype} </h4>
               </div>
               <br />
               <br />
