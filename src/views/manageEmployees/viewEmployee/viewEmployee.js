@@ -14,7 +14,7 @@ import {
 import { useEffect, useState } from 'react'
 import { DocsLink } from 'src/components'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../components/index'
-function ViewEmployee() {
+function ViewEmployee(props) {
   const [data, setData] = useState([])
   useEffect(() => {
     fetch('http://192.168.1.108:5000/api/users').then((result) => {
@@ -25,6 +25,8 @@ function ViewEmployee() {
     })
   }, [])
   console.warn(data)
+  console.log('lllllllllllllllllllllllllllllllllllllll')
+  console.log(props)
   //const viewEmployee = () => {
   return (
     <>

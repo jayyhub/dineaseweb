@@ -10,17 +10,28 @@ import {
   CHeaderToggler,
   CNavLink,
   CNavItem,
+  CButton,
+  CNavbarText,
+  CAvatar,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import './styles.css'
 import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
 
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import { logo } from 'src/assets/brand/logo'
+import { useHistory } from 'react-router-dom'
 
 const AppHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
+  const history = useHistory()
+  function logOut() {
+    console.log('inside')
+    localStorage.clear()
+    history.push('/')
+  }
 
   return (
     <CHeader position="sticky" className="mb-4">
@@ -39,6 +50,19 @@ const AppHeader = () => {
             <CNavLink to="/dashboard" component={NavLink} activeClassName="active">
               Dashboard
             </CNavLink>
+          </CNavItem>
+          <CNavItem className="avatartext">
+            <CNavbarText> Jawwad123 </CNavbarText>
+          </CNavItem>
+          <CNavItem>
+            <CAvatar color="secondary" size="lg" className="avatar">
+              J
+            </CAvatar>
+          </CNavItem>
+          <CNavItem>
+            <CButton color="dark" shape="rounded-pill" className="btnava" onClick={logOut}>
+              LogOut
+            </CButton>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-3">
