@@ -111,7 +111,7 @@ function AddInventory() {
 
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/icategory').then((result) => {
+    fetch('http://192.168.43.27:5000/api/icategory').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData(resp)
@@ -127,7 +127,7 @@ function AddInventory() {
     let data = { inventory_name, date_of_purchase, cost, quantity, total_cost, category_id }
     console.log('Hello')
     console.log(data)
-    fetch('http://192.168.1.108:5000/api/inventory', {
+    fetch('http://192.168.43.27:5000/api/inventory', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -140,6 +140,7 @@ function AddInventory() {
         console.warn('resp', resp)
       })
     })
+    alert('Inventory has been added.')
   }
   return (
     <>

@@ -20,14 +20,14 @@ function ViewMenu() {
   const [item_description, setdesc] = useState('')
   const [menu_status, setstatus] = useState('')
   const [item_id, setitemId] = useState(null)
-  const [category_id, setcat] = useState('')
-  const [icategory_id, setfood] = useState('')
+  const [icategory_id, setcat] = useState('')
+  const [category_id, setfood] = useState('')
   const [item_price, setprice] = useState('')
   const [image_id, setimg] = useState('')
   const [data, setData] = useState([])
   const [r, setr] = useState([])
   useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/amenu').then((result) => {
+    fetch('http://192.168.43.27:5000/api/amenu').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData(resp)
@@ -37,7 +37,7 @@ function ViewMenu() {
 
   const [data1, setCata] = useState([])
   useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/itemcategories').then((result) => {
+    fetch('http://192.168.43.27:5000/api/itemcategories').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setCata(resp)
@@ -47,7 +47,7 @@ function ViewMenu() {
 
   const [data2, setFata] = useState([])
   useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/foodcategories').then((result) => {
+    fetch('http://192.168.43.27:5000/api/foodcategories').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setFata(resp)
@@ -82,7 +82,7 @@ function ViewMenu() {
     // console.log('you')
     // console.log(item)
     console.warn('item', JSON.stringify(item))
-    fetch(`http://192.168.1.108:5000/api/menu/${item_id}`, {
+    fetch(`http://192.168.43.27:5000/api/menu/${item_id}`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
@@ -101,11 +101,12 @@ function ViewMenu() {
       //   setr(resp)
       // })
     })
+    alert('Menu has been added.')
   }
 
   function getUser(id) {
     console.log(id)
-    fetch(`http://192.168.1.108:5000/api/menu/${id}`).then((result) => {
+    fetch(`http://192.168.43.27:5000/api/menu/${id}`).then((result) => {
       result.json().then((resp) => {
         console.warn('hey')
         setitemname(resp[0].item_name)
@@ -114,8 +115,8 @@ function ViewMenu() {
         setprice(resp[0].item_price)
         setstatus(resp[0].menu_status)
         setimg(resp[0].image_id)
-        setcat(resp[0].category_id)
-        setfood(resp[0].icategory_id)
+        setcat(resp[0].icategory_id)
+        setfood(resp[0].category_id)
       })
     })
   }
@@ -196,19 +197,19 @@ function ViewMenu() {
               >
                 <option selected>Menu Status</option>
                 <option>available</option>
-                <option>not available</option>
+                <option>unavailable</option>
               </select>
 
               <select
                 id="inputState"
                 className="form-select rocket msp it"
-                value={category_id}
+                value={icategory_id}
                 onChange={(e) => {
                   data1.map((item) => {
-                    if (item.category_name === e.target.value) {
+                    if (item.icategory_name === e.target.value) {
                       console.log('Hello')
-                      console.log(item.category_id)
-                      setcat(item.category_id)
+                      console.log(item.icategory_id)
+                      setcat(item.icategory_id)
                     }
                   })
                 }}
@@ -221,7 +222,7 @@ function ViewMenu() {
               <select
                 id="inputState"
                 className="form-select rocket msp it"
-                value={icategory_id}
+                value={category_id}
                 onChange={(e) => {
                   data2.map((item) => {
                     if (item.category_name === e.target.value) {

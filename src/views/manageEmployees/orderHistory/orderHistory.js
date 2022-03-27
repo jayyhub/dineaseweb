@@ -23,7 +23,7 @@ import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../component
 function Orderhistory() {
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/orders').then((result) => {
+    fetch('http://192.168.43.27:5000/api/orders').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData(resp)
@@ -33,7 +33,7 @@ function Orderhistory() {
   console.warn(data)
 
   function temp() {
-    fetch('http://192.168.1.108:5000/api/orders').then((result) => {
+    fetch('http://192.168.43.27:5000/api/orders').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData(resp)

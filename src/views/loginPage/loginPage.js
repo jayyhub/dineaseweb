@@ -10,8 +10,6 @@ import {
   CFormText,
   CImage,
 } from '@coreui/react'
-// import {Form} from 'react-bootstrap/Form'
-// import {Button} from 'react-bootstrap/Button'
 import './Login.css'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 
@@ -19,32 +17,36 @@ export default function Login() {
   const [username, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [res, setres] = useState('')
+  const [status, setstat] = useState(true)
+  const [uerr, setuerr] = useState(null)
+  const [perr, setperr] = useState(null)
   const history = useHistory()
-
-  function validateForm() {
-    return username.length > 0 && password.length > 0
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault()
-  }
+  const ip = process.env.REACT_APP_ADDR
 
   useEffect(() => {
     if (localStorage.getItem('user-info')) {
       history.push({
         pathname: '/dashboard',
         state: { user: res },
+        //state: { user: res, disp_name: res.users_name },
       })
     }
   })
 
+  function validateForm() {
+    if (username.length === 0) setuerr('uprob')
+    else if (password.length === 0) {
+      setuerr('')
+      setperr('pprob')
+    } else if (username.length > 0 && password.length > 0) login()
+    else alert('Problem In Validation')
+  }
+
   async function login() {
     const usertype = 'admin'
-    console.warn(username, password)
     let item = { username, password, usertype }
     let x = JSON.stringify(item)
-    //console.log(x)
-    let result = await fetch('http://192.168.1.108:5000/api/user', {
+    let result = await fetch('http://' + ip + ':5000/api/user', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -52,14 +54,19 @@ export default function Login() {
       },
       body: JSON.stringify(item),
     })
-    result = await result.json()
-    console.log(result[0])
-    setres(result[0])
-    localStorage.setItem('user-info', JSON.stringify(result))
-    history.push({
-      pathname: '/dashboard',
-      state: { user: res },
-    })
+    let stat = await result.status
+    if (stat === 200) {
+      result = await result.json()
+      //console.log('TEST')
+      //console.log(result[0].users_name)
+      setres(result[0])
+      localStorage.setItem('disp_name', result[0].users_name)
+      localStorage.setItem('user-info', JSON.stringify(result))
+    } else {
+      setuerr('')
+      setperr('')
+      setstat(false)
+    }
   }
 
   return (
@@ -76,6 +83,13 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
             aria-describedby="emailHelp"
           />
+          {uerr === 'uprob' ? (
+            <div id="uerr">
+              <p style={{ color: 'red' }}>Please Enter Username</p>
+            </div>
+          ) : (
+            <div id="uerr"></div>
+          )}
         </div>
         <div className="mb-3">
           <CFormLabel htmlFor="exampleInputPassword1">User Password</CFormLabel>
@@ -84,8 +98,22 @@ export default function Login() {
             id="exampleInputPassword1"
             onChange={(e) => setPassword(e.target.value)}
           />
+          {perr === 'pprob' ? (
+            <div id="perr">
+              <p style={{ color: 'red' }}>Please Enter Password</p>
+            </div>
+          ) : (
+            <div id="perr"></div>
+          )}
         </div>
-        <CButton className="btn" type="submit" onClick={login} color="primary">
+        {status ? (
+          <div id="loginHelp"></div>
+        ) : (
+          <div id="loginHelp">
+            <p style={{ color: 'red' }}>Incorrect Username or Password</p>
+          </div>
+        )}
+        <CButton className="btn" type="submit" onClick={validateForm} color="primary">
           Login
         </CButton>
       </CForm>

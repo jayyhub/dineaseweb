@@ -79,7 +79,7 @@ function AddMenu() {
 
   const [data1, setData1] = useState([])
   useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/foodcategories').then((result) => {
+    fetch('http://192.168.43.27:5000/api/foodcategories').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData1(resp)
@@ -89,7 +89,7 @@ function AddMenu() {
 
   const [data2, setData2] = useState([])
   useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/itemcategories').then((result) => {
+    fetch('http://192.168.43.27:5000/api/itemcategories').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData2(resp)
@@ -140,7 +140,7 @@ function AddMenu() {
       icategory_id,
     }
     console.log(data)
-    fetch('http://192.168.1.108:5000/api/menu', {
+    fetch('http://192.168.43.27:5000/api/menu', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -153,6 +153,7 @@ function AddMenu() {
         console.warn('resp', resp)
       })
     })
+    alert('Menu has been added.')
   }
   return (
     <>

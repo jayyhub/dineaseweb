@@ -25,7 +25,7 @@ function Profile() {
   // console.log(id)
 
   useEffect(() => {
-    fetch(`http://192.168.1.108:5000/api/user/${id}`).then((result) => {
+    fetch(`http://192.168.43.27:5000/api/user/${id}`).then((result) => {
       result.json().then((resp) => {
         console.warn('result', resp[0])
         setData(resp[0])

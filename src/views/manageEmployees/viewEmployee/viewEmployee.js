@@ -14,20 +14,19 @@ import {
 import { useEffect, useState } from 'react'
 import { DocsLink } from 'src/components'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../components/index'
+
 function ViewEmployee(props) {
   const [data, setData] = useState([])
+  const ip = process.env.REACT_APP_ADDR
+
   useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/users').then((result) => {
+    fetch('http://' + ip + ':5000/api/users').then((result) => {
       result.json().then((resp) => {
-        //console.warn('result', resp)
         setData(resp)
       })
     })
   }, [])
-  //console.warn(data)
-  //console.log('lllllllllllllllllllllllllllllllllllllll')
-  //console.log(props)
-  //const viewEmployee = () => {
+
   return (
     <>
       <div>

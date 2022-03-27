@@ -14,26 +14,26 @@ import {
 import { useEffect, useState } from 'react'
 import { DocsLink } from 'src/components'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../components/index'
+
 function TableStatus() {
   const [data, setData] = useState([])
-  useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/tables').then((result) => {
-      result.json().then((resp) => {
-        //console.warn('result', resp)
-        setData(resp)
-      })
-    })
-  }, [])
-  console.warn(data)
+  const ip = process.env.REACT_APP_ADDR
 
   function temp() {
-    fetch('http://192.168.1.108:5000/api/tables').then((result) => {
+    fetch('http://' + ip + ':5000/api/tables').then((result) => {
       result.json().then((resp) => {
-        //console.warn('result', resp)
         setData(resp)
       })
     })
   }
+
+  useEffect(() => {
+    fetch('http://' + ip + ':5000/api/tables').then((result) => {
+      result.json().then((resp) => {
+        setData(resp)
+      })
+    })
+  }, [])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -42,7 +42,6 @@ function TableStatus() {
     return () => clearInterval(interval)
   }, [])
 
-  //const viewEmployee = () => {
   return (
     <>
       <div>

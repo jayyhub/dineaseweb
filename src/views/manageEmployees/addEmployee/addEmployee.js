@@ -113,7 +113,7 @@ function AddEmployee() {
     //x.json()
     //console.warn(JSON.stringify(x))
     let data = { phone_no, password, usertype, NIC, username, users_name }
-    fetch('http://192.168.1.108:5000/api/users', {
+    fetch('http://192.168.10.4:5000/api/users', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -126,6 +126,7 @@ function AddEmployee() {
         console.warn('resp', resp)
       })
     })
+    alert('Employee has been added.')
   }
   return (
     <>

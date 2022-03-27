@@ -27,15 +27,11 @@ const AppHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
   const history = useHistory()
-  const username = localStorage.getItem('user-info')
-  const uname = username.substring(128, 143)
+  const dispname = localStorage.getItem('disp_name')
   function logOut() {
-    console.log('inside')
     localStorage.clear()
     history.push('/')
   }
-  //console.log('kkk')
-  //console.log(username.substring(137, 138))
   return (
     <CHeader position="sticky" className="mb-4">
       <CContainer fluid>
@@ -50,22 +46,26 @@ const AppHeader = () => {
         </CHeaderBrand>
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>
-            <CNavLink to="/dashboard" component={NavLink} activeClassName="active">
+            <CNavLink to="/dashboard" component={NavLink} activeClassName="active" className="hh">
               Dashboard
             </CNavLink>
           </CNavItem>
-          <CNavItem className="avatartext">
-            <CNavbarText> {uname} </CNavbarText>
+          <CNavItem>
+            <div className="avatartext">
+              <CNavbarText> {dispname} </CNavbarText>
+            </div>
           </CNavItem>
           <CNavItem>
-            <CAvatar color="secondary" size="lg" className="avatar">
-              J
+            <CAvatar color="secondary" size="lg">
+              {dispname[0]}
             </CAvatar>
           </CNavItem>
           <CNavItem>
-            <CButton color="dark" shape="rounded-pill" className="btnava" onClick={logOut}>
-              LogOut
-            </CButton>
+            <div className="btnava">
+              <CButton color="dark" shape="rounded-pill" onClick={logOut}>
+                LogOut
+              </CButton>
+            </div>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-3">

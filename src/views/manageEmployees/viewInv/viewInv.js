@@ -26,19 +26,22 @@ function ViewInv() {
   const [category_id, setctype] = useState('')
   const [date_of_purchase, setdate] = useState('')
   const [data, setData] = useState([])
+  const [cat_name, setCatName] = useState('Choose...')
   const [r, setr] = useState([])
+  const [data1, setCata] = useState([])
+  const ip = process.env.REACT_APP_ADDR
+
   useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/inventory').then((result) => {
+    fetch('http://' + ip + ':5000/api/inventory').then((result) => {
       result.json().then((resp) => {
-        console.log('Hello')
+        //console.log('Hello')
         setData(resp)
       })
     })
   }, [r])
 
-  const [data1, setCata] = useState([])
   useEffect(() => {
-    fetch('http://192.168.1.108:5000/api/icategory').then((result) => {
+    fetch('http://' + ip + ':5000/api/icategory').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setCata(resp)
@@ -66,8 +69,8 @@ function ViewInv() {
       category_id,
     }
 
-    console.warn('item', JSON.stringify(item))
-    fetch(`http://192.168.1.108:5000/api/inventory/${inventory_id}`, {
+    //console.warn('item', JSON.stringify(item))
+    fetch(`http://` + ip + `:5000/api/inventory/${inventory_id}`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
@@ -76,16 +79,17 @@ function ViewInv() {
       body: JSON.stringify(item),
     }).then((result) => {
       result.json().then((resp) => {
-        console.warn(resp)
+        //console.warn(resp)
         setr(resp)
       })
     })
+    alert('Inventory has been added.')
   }
 
   function getUser(id) {
-    fetch(`http://192.168.1.108:5000/api/inventory/${id}`).then((result) => {
+    console.log('FIRST')
+    fetch(`http://` + ip + `:5000/api/inventory/${id}`).then((result) => {
       result.json().then((resp) => {
-        console.warn('hey')
         setiname(resp[0].inventory_name)
         setcost(resp[0].cost)
         setquantity(resp[0].quantity)
@@ -93,9 +97,15 @@ function ViewInv() {
         settcost(resp[0].total_cost)
         setdate(resp[0].date_of_purchase.split('T')[0])
         setctype(resp[0].category_id)
+        data1.map((item) => {
+          if (item.category_id === resp[0].category_id) {
+            setCatName(item.category_name)
+          }
+        })
       })
     })
   }
+
   return (
     <>
       <div>
@@ -171,7 +181,7 @@ function ViewInv() {
                   placeholder="Date of Purchase"
                   value={date_of_purchase}
                   onChange={(e) => {
-                    setquantity(e.target.value)
+                    setdate(e.target.value)
                   }}
                 />
                 <select
@@ -181,14 +191,15 @@ function ViewInv() {
                   onChange={(e) => {
                     data1.map((item) => {
                       if (item.category_name === e.target.value) {
-                        console.log('Hello')
-                        console.log(item.category_id)
+                        //console.log('Hello')
+                        //console.log(item.category_id)
+                        setCatName(item.category_name)
                         setctype(item.category_id)
                       }
                     })
                   }}
                 >
-                  <option selected>Choose...</option>
+                  <option selected>{cat_name}</option>
                   {data1.map((items, index) => (
                     <option key={index}> {items.category_name} </option>
                   ))}
