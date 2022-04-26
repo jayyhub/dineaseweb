@@ -76,14 +76,46 @@ function AddEmployee() {
   const [NIC, setNIC] = useState('')
   const [password, setpassword] = useState('')
   const [username, setuid] = useState('')
-  const [userErr, setuserErr] = useState(false)
+  const [unerr, setunerr] = useState('')
+  const [pherr, setpherr] = useState('')
+  const [nicerr, setnicerr] = useState('')
+  const ip = process.env.REACT_APP_ADDR
+
+  async function checkEmp() {
+    let result = await fetch(
+      `http://` + ip + `:5000/api/verifyuname?uname=${encodeURIComponent(username)}`,
+    )
+    let resp = await result.json()
+    if (resp === false) {
+      result = await fetch(
+        `http://` + ip + `:5000/api/verifynumber?number=${encodeURIComponent(phone_no)}`,
+      )
+      resp = await result.json()
+      if (resp === false) {
+        result = await fetch(`http://` + ip + `:5000/api/verifynic?nic=${encodeURIComponent(NIC)}`)
+        resp = await result.json()
+        if (resp === false) saveEmp()
+        else {
+          setunerr('')
+          setpherr('')
+          setnicerr('NIC number Already Exist')
+        }
+      } else {
+        setunerr('')
+        setpherr('Phone Number Already Exist')
+      }
+    } else setunerr('Username Already Exists')
+    //console.log(stat)
+  }
 
   function loginHandler(e) {
     if (/^[a-zA-Z]*$/g.test(fname))
       if (/^[a-zA-Z]*$/g.test(lname))
         if (/^[1-9]{1}[0-9]{9}$/g.test(phone_no))
           if (/^\d{13}$/g.test(NIC))
-            if (/^[A-Za-z0-9]+$/g.test(username)) saveEmp()
+            if (/^[A-Za-z0-9]+$/g.test(username))
+              //saveEmp()
+              checkEmp()
             else {
               alert(username + ' should be alphabetic or alphabetic with numeric')
               return false
@@ -113,7 +145,7 @@ function AddEmployee() {
     //x.json()
     //console.warn(JSON.stringify(x))
     let data = { phone_no, password, usertype, NIC, username, users_name }
-    fetch('http://192.168.10.4:5000/api/users', {
+    fetch('http://' + ip + ':5000/api/users', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -171,7 +203,7 @@ function AddEmployee() {
                 </div>
                 <div className="col-md-6">
                   <label htmlFor="inputCity" className="form-label">
-                    ID
+                    User Name
                   </label>
                   <input
                     type="text"
@@ -184,6 +216,7 @@ function AddEmployee() {
                     }}
                     id="inputCity"
                   ></input>
+                  <p style={{ color: 'red' }}>{unerr}</p>
                 </div>
                 <div className="col-md-4">
                   <label htmlFor="inputState" className="form-label">
@@ -218,6 +251,7 @@ function AddEmployee() {
                       setphone_no(e.target.value)
                     }}
                   ></input>
+                  <p style={{ color: 'red' }}>{pherr}</p>
                 </div>
                 <div className="col-md-6">
                   <label htmlFor="inputCity" className="form-label">
@@ -247,6 +281,7 @@ function AddEmployee() {
                     }}
                     id="inputPassword4"
                   ></input>
+                  <p style={{ color: 'red' }}>{nicerr}</p>
                 </div>
                 <div className="col-12">
                   <button type="submit" className="btn btn-primary">

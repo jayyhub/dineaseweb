@@ -11,6 +11,13 @@ import {
   CTableBody,
   CContainer,
   CButton,
+  CForm,
+  CCol,
+  CFormLabel,
+  CFormInput,
+  CFormSelect,
+  CFormCheck,
+  CFormFeedback,
 } from '@coreui/react'
 import { useEffect, useState } from 'react'
 import { DocsLink } from 'src/components'
@@ -18,19 +25,18 @@ import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../component
 import './viewInv.css'
 
 function ViewInv() {
+  const [inventory_id, setinvId] = useState(null)
   const [inventory_name, setiname] = useState('')
   const [cost, setcost] = useState('')
   const [quantity, setquantity] = useState('')
-  const [inventory_id, setinvId] = useState(null)
   const [total_cost, settcost] = useState('')
-  const [category_id, setctype] = useState('')
+  const [invcategory_nam, setInvCatName] = useState('')
   const [date_of_purchase, setdate] = useState('')
-  const [data, setData] = useState([])
-  const [cat_name, setCatName] = useState('Choose...')
+
   const [r, setr] = useState([])
-  const [data1, setCata] = useState([])
   const ip = process.env.REACT_APP_ADDR
 
+  const [data, setData] = useState([])
   useEffect(() => {
     fetch('http://' + ip + ':5000/api/inventory').then((result) => {
       result.json().then((resp) => {
@@ -40,6 +46,7 @@ function ViewInv() {
     })
   }, [r])
 
+  const [data1, setCata] = useState([])
   useEffect(() => {
     fetch('http://' + ip + ':5000/api/icategory').then((result) => {
       result.json().then((resp) => {
@@ -49,27 +56,27 @@ function ViewInv() {
     })
   }, [])
 
-  function updateInv(
-    inventory_name,
-    cost,
-    quantity,
-    inventory_id,
-    total_cost,
-    category_id,
-    date_of_purchase,
-  ) {
-    total_cost = cost * quantity
+  function updateInv() {
+    //total_cost = cost * quantity
+    let category_id = null
+
+    data1.map((item) => {
+      if (item.category_name === invcategory_nam) {
+        category_id = item.category_id
+      }
+    })
+
     let item = {
       inventory_id,
       inventory_name,
       cost,
       quantity,
-      date_of_purchase,
       total_cost,
+      date_of_purchase,
       category_id,
     }
 
-    //console.warn('item', JSON.stringify(item))
+    console.warn('item', JSON.stringify(item))
     fetch(`http://` + ip + `:5000/api/inventory/${inventory_id}`, {
       method: 'PUT',
       headers: {
@@ -78,32 +85,55 @@ function ViewInv() {
       },
       body: JSON.stringify(item),
     }).then((result) => {
-      result.json().then((resp) => {
-        //console.warn(resp)
-        setr(resp)
-      })
+      console.log(result)
+      if (result.status === 200) {
+        setr('')
+        alert('Inventory has been Updated.')
+      }
     })
-    alert('Inventory has been added.')
   }
 
   function getUser(id) {
-    console.log('FIRST')
+    //console.log('FIRST')
     fetch(`http://` + ip + `:5000/api/inventory/${id}`).then((result) => {
       result.json().then((resp) => {
+        setinvId(resp[0].inventory_id)
         setiname(resp[0].inventory_name)
         setcost(resp[0].cost)
         setquantity(resp[0].quantity)
-        setinvId(resp[0].inventory_id)
         settcost(resp[0].total_cost)
         setdate(resp[0].date_of_purchase.split('T')[0])
-        setctype(resp[0].category_id)
+        //setctype(resp[0].category_id)
         data1.map((item) => {
           if (item.category_id === resp[0].category_id) {
-            setCatName(item.category_name)
+            setInvCatName(item.category_name)
           }
         })
       })
     })
+  }
+
+  const [validated, setValidated] = useState(false)
+  const handleSubmit = (event) => {
+    const form = event.currentTarget
+    //console.log(form.checkValidity())
+    if (form.checkValidity() === false) {
+      //setValidated(x)
+      console.log('No Things Okay')
+      event.preventDefault()
+      //event.stopPropagation()
+    } else if (form.checkValidity() === true) {
+      //Update Inventory Function call here
+      console.log('All Things Okay')
+      //LOGIC TO CHECK IF INVENTORY EXIST OR NOT
+      updateInv()
+      //event.preventDefault()
+    } else {
+      //else condition here
+    }
+    //console.log('Hello')
+    setValidated(true)
+    event.preventDefault()
   }
 
   return (
@@ -147,80 +177,151 @@ function ViewInv() {
                   </CTableBody>
                 </CTable>
               </div>
-              <div>
-                <input
-                  type="text"
-                  className="space sp"
-                  placeholder="Inventory Name"
-                  value={inventory_name}
-                  onChange={(e) => {
-                    setiname(e.target.value)
-                  }}
-                />
-                <input
-                  type="text"
-                  className="space sp"
-                  placeholder="Cost"
-                  value={cost}
-                  onChange={(e) => {
-                    setcost(e.target.value)
-                  }}
-                />
-                <input
-                  type="text"
-                  className="space sp"
-                  placeholder="Quantity"
-                  value={quantity}
-                  onChange={(e) => {
-                    setquantity(e.target.value)
-                  }}
-                />
-                <input
-                  type="date"
-                  className="space sp"
-                  placeholder="Date of Purchase"
-                  value={date_of_purchase}
-                  onChange={(e) => {
-                    setdate(e.target.value)
-                  }}
-                />
-                <select
-                  id="inputState"
-                  className="form-select space sp"
-                  value={category_id}
-                  onChange={(e) => {
-                    data1.map((item) => {
-                      if (item.category_name === e.target.value) {
-                        //console.log('Hello')
-                        //console.log(item.category_id)
-                        setCatName(item.category_name)
-                        setctype(item.category_id)
-                      }
-                    })
-                  }}
+              <CContainer
+                style={{
+                  border: '2px solid grey',
+                  borderRadius: '12px',
+                  marginTop: '2%',
+                  marginBottom: '2%',
+                  overflow: 'hidden',
+                }}
+              >
+                <CForm
+                  className="row g-3 needs-validation"
+                  noValidate
+                  validated={validated}
+                  onSubmit={handleSubmit}
                 >
-                  <option selected>{cat_name}</option>
-                  {data1.map((items, index) => (
-                    <option key={index}> {items.category_name} </option>
-                  ))}
-                </select>
-                <button
-                  className="butn"
-                  onClick={() =>
-                    updateInv(
-                      inventory_name,
-                      cost,
-                      quantity,
-                      inventory_id,
-                      total_cost,
-                      category_id,
-                      date_of_purchase,
-                    )
-                  }
-                >
-                  Update Inventory
-                </button>
-              </div>
+                  <CCol md={4}>
+                    <CFormLabel htmlFor="InvetoryValidationChange01">Inventory Name</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      aria-describedby="InvetoryValidationChange01Feedback"
+                      feedbackInvalid="Inventory Name Should Contain Only Aplhabets"
+                      pattern="[A-z a-z]+"
+                      id="InvetoryValidationChange01"
+                      placeholder="Inventory Name"
+                      required
+                      value={inventory_name}
+                      onChange={(e) => {
+                        setiname(e.target.value)
+                      }}
+                    />
+                    <CFormFeedback invalid>Only alphabetic characters allowed</CFormFeedback>
+                  </CCol>
+                  <CCol md={3}>
+                    <CFormLabel htmlFor="ItemValidationChange02">Cost</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      pattern="[0-9]+"
+                      placeholder="Cost"
+                      feedbackInvalid="Cost Should Contain Only Digits"
+                      id="InvetoryValidationChange02"
+                      label="Cost"
+                      required
+                      value={cost}
+                      onChange={(e) => {
+                        settcost(e.target.value * quantity)
+                        setcost(e.target.value)
+                      }}
+                    />
+                    <CFormFeedback invalid>Only digits allowed</CFormFeedback>
+                  </CCol>
+                  <CCol md={3}>
+                    <CFormLabel htmlFor="ItemValidationChange03">Quantity</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      pattern="[0-9]+"
+                      placeholder="Quantity"
+                      feedbackInvalid="Quantity can only be numberic"
+                      id="InvetoryValidationChange03"
+                      label="Quantity"
+                      required
+                      value={quantity}
+                      onChange={(e) => {
+                        settcost(e.target.value * cost)
+                        setquantity(e.target.value)
+                      }}
+                    />
+                    <CFormFeedback invalid>Only digits allowed</CFormFeedback>
+                  </CCol>
+                  <CCol md={2}>
+                    <CFormLabel htmlFor="InventoryValidationChange04">Total Cost</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      placeholder="Total Cost"
+                      aria-describedby="inputGroupPrependFeedback"
+                      id="InventoryValidationChange04"
+                      required
+                      disabled
+                      value={total_cost}
+                      onChange={(e) => {
+                        settcost(e.target.value)
+                      }}
+                    />
+                  </CCol>
+                  <CCol md={7}>
+                    <CFormLabel htmlFor="IventoryValidationChange05">Inventory Category</CFormLabel>
+                    <CFormSelect
+                      //aria-describedby="validationCustom04Feedback"
+                      feedbackInvalid="Please select an Inventory Category"
+                      id="IventoryValidationChange05"
+                      label="Inventory Category"
+                      required
+                      pattern="/^(?!Inventory Category).*/g"
+                      value={invcategory_nam}
+                      onChange={(e) => {
+                        setInvCatName(e.target.value)
+                        // data.map((item) => {
+                        //   if (item.category_name === e.target.value) {
+                        //     setInvCatName(e.target.value)
+                        //   }
+                        // })
+                      }}
+                    >
+                      <option selected value="">
+                        Inventory Category
+                      </option>
+                      {data1.map((items, index) => (
+                        <option key={index}> {items.category_name} </option>
+                      ))}
+                    </CFormSelect>
+                    <CFormFeedback invalid>Please select an Inventory Category</CFormFeedback>
+                  </CCol>
+                  <CCol md={5}>
+                    <label htmlFor="InventoryValidationChange06" className="form-label">
+                      Date of Purchase
+                    </label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      required
+                      id="InventoryValidationChange06"
+                      value={date_of_purchase}
+                      onChange={(e) => {
+                        setdate(e.target.value)
+                      }}
+                    />
+                    <CFormFeedback invalid>Please provide a date</CFormFeedback>
+                  </CCol>
+                  <CCol xs={12}>
+                    <CFormCheck
+                      type="checkbox"
+                      id="invalidCheck01"
+                      label="Confirm Changes"
+                      required
+                    />
+                    <CFormFeedback invalid>
+                      You must check the checkbox before submitting.
+                    </CFormFeedback>
+                  </CCol>
+                  <CCol md={10}>
+                    <CButton color="primary" type="submit">
+                      Edit Inventory Item
+                    </CButton>
+                  </CCol>
+                </CForm>
+              </CContainer>
             </CContainer>
           </div>
           <AppFooter />

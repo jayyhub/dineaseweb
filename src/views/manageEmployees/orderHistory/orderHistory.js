@@ -20,10 +20,12 @@ import {
 import { useEffect, useState } from 'react'
 import { DocsLink } from 'src/components'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../components/index'
+const ip = process.env.REACT_APP_ADDR
+
 function Orderhistory() {
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('http://192.168.43.27:5000/api/orders').then((result) => {
+    fetch(`http://` + ip + `:5000/api/orders`).then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData(resp)
@@ -33,7 +35,7 @@ function Orderhistory() {
   console.warn(data)
 
   function temp() {
-    fetch('http://192.168.43.27:5000/api/orders').then((result) => {
+    fetch(`http://` + ip + `:5000/api/orders`).then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData(resp)

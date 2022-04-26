@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types'
+import PropTypes, { func } from 'prop-types'
 import React, { useEffect, useState, createRef } from 'react'
 import classNames from 'classnames'
 import {
-  // CAvatar,
   CButton,
   CButtonGroup,
   CCard,
@@ -25,6 +24,7 @@ import {
 import { rgbToHex } from '@coreui/utils'
 import { DocsLink } from 'src/components'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../components/index'
+const ip = process.env.REACT_APP_ADDR
 
 const ThemeView = () => {
   const [color, setColor] = useState('rgb(255, 255, 255)')
@@ -73,13 +73,15 @@ function AddMenu() {
   const [item_description, setdesc] = useState('')
   const [menu_status, setstatus] = useState('')
   const [category_id, setcat] = useState('')
+  const [cat_name, setCatName] = useState('')
   const [icategory_id, setfood] = useState('')
+  const [icat_name, setiCatName] = useState('')
   const [item_price1, setprice] = useState('')
-  const [userErr, setuserErr] = useState(false)
+  const [inameerr, setierr] = useState(false)
 
   const [data1, setData1] = useState([])
   useEffect(() => {
-    fetch('http://192.168.43.27:5000/api/foodcategories').then((result) => {
+    fetch(`http://` + ip + `:5000/api/foodcategories`).then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData1(resp)
@@ -87,47 +89,27 @@ function AddMenu() {
     })
   }, [])
 
+  // const [data2, setData2] = useState([])
+  // useEffect(() => {
+  //   fetch(`http://` + ip + `:5000/api/itemcategories`).then((result) => {
+  //     result.json().then((resp) => {
+  //       setData2(resp)
+  //     })
+  //   })
+  // }, [])
+
+  async function fetchicat(cat_id) {
+    // let result = await fetch(
+    //   `http://` + ip + `:5000/api/itemcategories/${encodeURIComponent(cat_id)}`,
+    // )
+    let result = await fetch(`http://` + ip + `:5000/api/itemcategories/${cat_id}`)
+    let resp = await result.json()
+    setData2(resp)
+  }
+
   const [data2, setData2] = useState([])
-  useEffect(() => {
-    fetch('http://192.168.43.27:5000/api/itemcategories').then((result) => {
-      result.json().then((resp) => {
-        //console.warn('result', resp)
-        setData2(resp)
-      })
-    })
-  }, [])
-  // function loginHandler(e) {
-  //   if (/^[a-zA-Z]*$/g.test(fname))
-  //     if (/^[a-zA-Z]*$/g.test(lname))
-  //       if (/^[1-9]{1}[0-9]{9}$/g.test(phone_no))
-  //         if (/^\d{13}$/g.test(NIC))
-  //           if (/^[A-Za-z0-9]+$/g.test(username)) saveEmp()
-  //           else {
-  //             alert(username + ' should be alphabetic or alphabetic with numeric')
-  //             return false
-  //           }
-  //         else {
-  //           alert(NIC + ' should be of 13 digits with no -')
-  //           return false
-  //         }
-  //       else {
-  //         alert(phone_no + ' should be of 10 digits having no initial 0')
-  //         return false
-  //       }
-  //     else {
-  //       alert(lname + ' should be alphabetic')
-  //       return false
-  //     }
-  //   else {
-  //     alert(fname + ' should be alphabetic')
-  //     return false
-  //   }
-  //   e.preventDefault()
-  // }
 
   function saveEmp() {
-    //x.json()
-    //console.warn(JSON.stringify(x))
     const item_price = Number(item_price1)
     const image_id = 1
     let data = {
@@ -139,8 +121,8 @@ function AddMenu() {
       category_id,
       icategory_id,
     }
-    console.log(data)
-    fetch('http://192.168.43.27:5000/api/menu', {
+    //console.log(data)
+    fetch(`http://` + ip + `:5000/api/menu`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -148,13 +130,47 @@ function AddMenu() {
       },
       body: JSON.stringify(data),
     }).then((result) => {
-      console.warn('result', result)
+      //console.warn('result', result)
       result.json().then((resp) => {
-        console.warn('resp', resp)
+        //console.warn('resp', resp)
       })
     })
     alert('Menu has been added.')
   }
+
+  async function CheckItemName() {
+    let result = await fetch(
+      `http://` + ip + `:5000/api/verifyitemname?i_name=${encodeURIComponent(item_name)}`,
+    )
+    let resp = await result.json()
+    if (resp === false) {
+      //if item name does not exist
+      setierr(false)
+      saveEmp()
+    } else setierr(true)
+  }
+
+  function MenuAddHandler(e) {
+    if (/^[a-zA-Z ]*$/g.test(item_name))
+      if (/^[a-zA-Z ,]*$/g.test(item_description))
+        if (/^[0-9]+$/g.test(item_price1))
+          //if All Regular expressions gets satified
+          CheckItemName()
+        else {
+          alert(item_price1 + ' should contain digits only')
+          return false
+        }
+      else {
+        alert(item_description + ' should contain alphabets only')
+        return false
+      }
+    else {
+      alert(item_name + ' should contain alphabets only')
+      return false
+    }
+    e.preventDefault()
+  }
+
   return (
     <>
       <div>
@@ -163,7 +179,8 @@ function AddMenu() {
           <AppHeader />
           <div className="body flex-grow-1 px-3">
             <CContainer lg>
-              <form className="row g-3" onSubmit={saveEmp}>
+              {/* <form className="row g-3" onSubmit={saveEmp}> */}
+              <form className="row g-3" onSubmit={MenuAddHandler}>
                 <div className="col-md-6">
                   <label htmlFor="inputEmail4" className="form-label">
                     Item Name
@@ -179,6 +196,7 @@ function AddMenu() {
                     }}
                     id="inputEmail4"
                   ></input>
+                  {inameerr ? <div style={{ color: 'red' }}>Item Name Already Exist</div> : <></>}
                 </div>
                 <div className="col-md-9">
                   <label htmlFor="inputPassword4" className="form-label">
@@ -210,31 +228,7 @@ function AddMenu() {
                   >
                     <option selected>Choose...</option>
                     <option>available</option>
-                    <option>not available</option>
-                  </select>
-                </div>
-                <div className="col-md-4">
-                  <label htmlFor="inputState" className="form-label">
-                    Item Category
-                  </label>
-                  <select
-                    id="inputState"
-                    className="form-select"
-                    value={category_id}
-                    onChange={(e) => {
-                      data2.map((item) => {
-                        if (item.icategory_name === e.target.value) {
-                          console.log('Hello')
-                          console.log(item.icategory_id)
-                          setcat(item.icategory_id)
-                        }
-                      })
-                    }}
-                  >
-                    <option selected>Choose...</option>
-                    {data2.map((items, index) => (
-                      <option key={index}> {items.icategory_name} </option>
-                    ))}
+                    <option>unavailable</option>
                   </select>
                 </div>
                 <div className="col-md-4">
@@ -244,13 +238,16 @@ function AddMenu() {
                   <select
                     id="inputState"
                     className="form-select"
-                    value={icategory_id}
+                    //value={icategory_id}
+                    value={cat_name}
                     onChange={(e) => {
                       data1.map((item) => {
                         if (item.category_name === e.target.value) {
-                          console.log('Hello')
-                          console.log(item.category_id)
+                          //console.log('Hello')
+                          //console.log(item.category_id)
+                          setCatName(e.target.value)
                           setfood(item.category_id)
+                          fetchicat(item.category_id)
                         }
                       })
                     }}
@@ -258,6 +255,32 @@ function AddMenu() {
                     <option selected>Choose...</option>
                     {data1.map((items, index) => (
                       <option key={index}> {items.category_name} </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-md-4">
+                  <label htmlFor="inputState" className="form-label">
+                    Item Category
+                  </label>
+                  <select
+                    id="inputState"
+                    className="form-select"
+                    //value={category_id}
+                    value={icat_name}
+                    onChange={(e) => {
+                      data2.map((item) => {
+                        if (item.icategory_name === e.target.value) {
+                          //console.log('Hello')
+                          //console.log(item.icategory_id)
+                          setiCatName(e.target.value)
+                          setcat(item.icategory_id)
+                        }
+                      })
+                    }}
+                  >
+                    <option selected>Choose...</option>
+                    {data2.map((items, index) => (
+                      <option key={index}> {items.icategory_name} </option>
                     ))}
                   </select>
                 </div>

@@ -17,6 +17,8 @@ import { useEffect, useState } from 'react'
 import { DocsLink } from 'src/components'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../components/index'
 import CIcon from '@coreui/icons-react'
+const ip = process.env.REACT_APP_ADDR
+
 function Profile() {
   const username = localStorage.getItem('user-info')
   const id = Number(username[9])
@@ -25,7 +27,7 @@ function Profile() {
   // console.log(id)
 
   useEffect(() => {
-    fetch(`http://192.168.43.27:5000/api/user/${id}`).then((result) => {
+    fetch(`http://` + ip + `:5000/api/user/${id}`).then((result) => {
       result.json().then((resp) => {
         console.warn('result', resp[0])
         setData(resp[0])

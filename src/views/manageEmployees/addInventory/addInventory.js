@@ -21,10 +21,19 @@ import {
   CTableHeaderCell,
   CTableRow,
   CContainer,
+  CFormCheck,
+  CFormFeedback,
+  CFormSelect,
+  CFormInput,
+  CInputGroupText,
+  CInputGroup,
+  CFormLabel,
+  CForm,
 } from '@coreui/react'
 import { rgbToHex } from '@coreui/utils'
 import { DocsLink } from 'src/components'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../components/index'
+const ip = process.env.REACT_APP_ADDR
 
 const ThemeView = () => {
   const [color, setColor] = useState('rgb(255, 255, 255)')
@@ -70,12 +79,35 @@ ThemeColor.propTypes = {
 
 function AddInventory() {
   const [inventory_name, setiname] = useState('')
-  const [date_of_purchase, setdate] = useState('')
   const [cost1, setcost] = useState('')
   const [quantity1, setquantity] = useState('')
   const [total_cost, settcost] = useState('')
-  const [category_id, setctype] = useState('')
-  const [userErr, setuserErr] = useState(false)
+  const [date_of_purchase, setdate] = useState('')
+  //const [category_id, setctype] = useState('')
+  const [invcategory_nam, setInvCatName] = useState('')
+
+  const [inverr, setinverr] = useState('')
+  const [validated, setValidated] = useState(false)
+  const handleSubmit = (event) => {
+    const form = event.currentTarget
+    //console.log(form.checkValidity())
+    if (form.checkValidity() === false) {
+      //setValidated(x)
+      event.preventDefault()
+      //event.stopPropagation()
+    } else if (form.checkValidity() === true) {
+      //Update Inventory Function call here
+      console.log('All Things Okay')
+      //LOGIC TO CHECK IF INVENTORY EXIST OR NOT
+      AddInventory()
+      //event.preventDefault()
+    } else {
+      //else condition here
+    }
+    //console.log('Hello')
+    setValidated(true)
+    event.preventDefault()
+  }
 
   function editproduct(inventory_id) {
     console.log(inventory_id)
@@ -111,7 +143,7 @@ function AddInventory() {
 
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('http://192.168.43.27:5000/api/icategory').then((result) => {
+    fetch('http://' + ip + ':5000/api/icategory').then((result) => {
       result.json().then((resp) => {
         //console.warn('result', resp)
         setData(resp)
@@ -119,28 +151,40 @@ function AddInventory() {
     })
   }, [])
 
-  function saveEmp() {
-    //x.json()
-    //console.warn(JSON.stringify(x))
+  function AddInventory() {
     const cost = Number(cost1)
     const quantity = Number(quantity1)
-    let data = { inventory_name, date_of_purchase, cost, quantity, total_cost, category_id }
-    console.log('Hello')
-    console.log(data)
-    fetch('http://192.168.43.27:5000/api/inventory', {
+    let category_id = null
+
+    data.map((item) => {
+      if (item.category_name === invcategory_nam) {
+        category_id = item.category_id
+      }
+    })
+
+    let data_to_send = {
+      inventory_name,
+      date_of_purchase,
+      cost,
+      quantity,
+      total_cost,
+      category_id,
+    }
+    // console.log('Hello')
+    // console.log(data_to_send)
+    fetch('http://' + ip + ':5000/api/inventory', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(data_to_send),
     }).then((result) => {
       console.warn('result', result)
-      result.json().then((resp) => {
-        console.warn('resp', resp)
-      })
+      if (result.status === 200) {
+        alert('Inventory has been added.')
+      }
     })
-    alert('Inventory has been added.')
   }
   return (
     <>
@@ -150,6 +194,7 @@ function AddInventory() {
           <AppHeader />
           <div className="body flex-grow-1 px-3">
             <CContainer lg>
+              {/*
               <form className="row g-3" onSubmit={saveEmp}>
                 <div className="col-md-6">
                   <label htmlFor="inputEmail4" className="form-label">
@@ -268,6 +313,128 @@ function AddInventory() {
                   </button>
                 </div>
               </form>
+                  */}
+              <CForm
+                className="row g-3 needs-validation"
+                noValidate
+                validated={validated}
+                onSubmit={handleSubmit}
+              >
+                <CCol md={4}>
+                  <CFormLabel htmlFor="InvetoryValidation01">Inventory Name</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    aria-describedby="InvetoryValidation01Feedback"
+                    feedbackInvalid="Inventory Name Should Contain Only Aplhabets"
+                    pattern="[A-z a-z]+"
+                    id="InvetoryValidation01"
+                    placeholder="Inventory Name"
+                    required
+                    value={inventory_name}
+                    onChange={(e) => {
+                      setinverr(false)
+                      setiname(e.target.value)
+                    }}
+                  />
+                  <CFormFeedback invalid>Only alphabetic characters allowed</CFormFeedback>
+                </CCol>
+                <CCol md={3}>
+                  <CFormLabel htmlFor="ItemValidation02">Cost</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    pattern="[0-9]+"
+                    placeholder="Cost"
+                    feedbackInvalid="Cost Should Contain Only Digits"
+                    id="InvetoryValidation02"
+                    label="Cost"
+                    required
+                    value={cost1}
+                    onChange={(e) => {
+                      settcost(e.target.value * quantity1)
+                      setcost(e.target.value)
+                    }}
+                  />
+                  <CFormFeedback invalid>Only digits allowed</CFormFeedback>
+                </CCol>
+                <CCol md={3}>
+                  <CFormLabel htmlFor="ItemValidation03">Quantity</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    pattern="[0-9]+"
+                    placeholder="Quantity"
+                    feedbackInvalid="Quantity can only be numberic"
+                    id="InvetoryValidation03"
+                    label="Quantity"
+                    required
+                    value={quantity1}
+                    onChange={(e) => {
+                      settcost(e.target.value * cost1)
+                      setquantity(e.target.value)
+                    }}
+                  />
+                  <CFormFeedback invalid>Only digits allowed</CFormFeedback>
+                </CCol>
+                <CCol md={2}>
+                  <CFormLabel htmlFor="InventoryValidation04">Total Cost</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    placeholder="Total Cost"
+                    aria-describedby="inputGroupPrependFeedback"
+                    id="InventoryValidation04"
+                    required
+                    disabled
+                    value={total_cost}
+                    onChange={(e) => {
+                      settcost(e.target.value)
+                    }}
+                  />
+                  <CFormFeedback invalid>Only digits allowed</CFormFeedback>
+                </CCol>
+                <CCol md={7}>
+                  <CFormLabel htmlFor="IventoryValidation04">Inventory Category</CFormLabel>
+                  <CFormSelect
+                    //aria-describedby="validationCustom04Feedback"
+                    feedbackInvalid="Please select an Inventory Category"
+                    id="IventoryValidation04"
+                    label="Inventory Category"
+                    required
+                    pattern="/^(?!Inventory Category).*/g"
+                    value={invcategory_nam}
+                    onChange={(e) => {
+                      setInvCatName(e.target.value)
+                    }}
+                  >
+                    <option selected value="">
+                      Inventory Category
+                    </option>
+                    {data.map((items, index) => (
+                      <option key={index}> {items.category_name} </option>
+                    ))}
+                  </CFormSelect>
+                  <CFormFeedback invalid>Please select an Inventory Category</CFormFeedback>
+                </CCol>
+                <CCol md={5}>
+                  <label htmlFor="InventoryValidation05" className="form-label">
+                    Date of Purchase
+                  </label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    required
+                    id="InventoryValidation05"
+                    value={date_of_purchase}
+                    onChange={(e) => {
+                      setdate(e.target.value)
+                    }}
+                  />
+                  <CFormFeedback invalid>Please select a date</CFormFeedback>
+                </CCol>
+                <CCol md={10}>
+                  <CButton color="primary" type="submit">
+                    Submit form
+                  </CButton>
+                </CCol>
+              </CForm>
             </CContainer>
           </div>
           <AppFooter />
