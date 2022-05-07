@@ -23,7 +23,7 @@ import {
 } from '@coreui/react'
 //import { CChart } from '@coreui/Users'
 import './dashboard.css'
-import { CChartLine } from '@coreui/react-chartjs'
+import { CChartDoughnut } from '@coreui/react-chartjs'
 import { getStyle, hexToRgba } from '@coreui/utils'
 import CIcon from '@coreui/icons-react'
 import {
@@ -87,9 +87,20 @@ const Dashboard = (props) => {
                   ],
                 }}
               /> */}
-              <CHeaderText className="welcome ml-xl-3" align="middle">
+              {/* <CHeaderText className="welcome ml-xl-3" align="middle">
                 Welcome to the DineEase System
-              </CHeaderText>
+              </CHeaderText> */}
+              <CChartDoughnut
+                data={{
+                  labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
+                  datasets: [
+                    {
+                      backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+                      data: [40, 20, 80, 10],
+                    },
+                  ],
+                }}
+              />
             </CContainer>
           </div>
           <AppFooter />
