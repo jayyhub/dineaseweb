@@ -90,7 +90,7 @@ const Dashboard = (props) => {
               {/* <CHeaderText className="welcome ml-xl-3" align="middle">
                 Welcome to the DineEase System
               </CHeaderText> */}
-              <CChartDoughnut
+              {/* <CChartDoughnut
                 data={{
                   labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
                   datasets: [
@@ -100,7 +100,7 @@ const Dashboard = (props) => {
                     },
                   ],
                 }}
-              />
+              /> */}
             </CContainer>
           </div>
           <AppFooter />

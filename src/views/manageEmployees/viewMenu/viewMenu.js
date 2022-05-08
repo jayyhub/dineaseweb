@@ -520,7 +520,7 @@ function ViewMenu() {
                 </CForm>
               </CContainer>
               {/*LEFT POINT. LOGIC TO CHNAGE TEXT FIELD TO BE IMPLEMENTED*/}
-              <CContainer>
+              {/* <CContainer>
                 <CRow>
                   <CCol sm={4}>
                     <input
@@ -663,7 +663,7 @@ function ViewMenu() {
                 // }
               >
                 Update Inventory
-              </button>
+              </button> */}
             </CContainer>
           </div>
           <AppFooter />
