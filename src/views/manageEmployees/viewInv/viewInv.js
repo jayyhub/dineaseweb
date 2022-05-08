@@ -143,8 +143,8 @@ function ViewInv() {
         <div className="wrapper d-flex flex-column min-vh-100 bg-light">
           <AppHeader />
           <div className="body flex-grow-1 px-3">
-            <CContainer lg>
-              <div className="half">
+            <CContainer xl>
+              <div style={{ overflow: 'scroll', height: '348px' }}>
                 <CTable striped>
                   <CTableHead>
                     <CTableRow>
@@ -170,7 +170,14 @@ function ViewInv() {
                         <CTableDataCell> {items.total_cost} </CTableDataCell>
                         <CTableDataCell>
                           {/* <button onClick={() => selectUser(items.inventory_id)}>Edit</button> */}
-                          <button onClick={() => getUser(items.inventory_id)}>Edit</button>
+                          <CButton
+                            id="edit-inv-button"
+                            onClick={() => getUser(items.inventory_id)}
+                            color="secondary"
+                            style={{ margin: '2%' }}
+                          >
+                            Edit
+                          </CButton>
                         </CTableDataCell>
                       </CTableRow>
                     ))}
@@ -304,7 +311,7 @@ function ViewInv() {
                     />
                     <CFormFeedback invalid>Please provide a date</CFormFeedback>
                   </CCol>
-                  <CCol xs={12}>
+                  <CCol xs={4}>
                     <CFormCheck
                       type="checkbox"
                       id="invalidCheck01"
@@ -315,7 +322,7 @@ function ViewInv() {
                       You must check the checkbox before submitting.
                     </CFormFeedback>
                   </CCol>
-                  <CCol md={10}>
+                  <CCol md={6}>
                     <CButton color="primary" type="submit">
                       Edit Inventory Item
                     </CButton>
