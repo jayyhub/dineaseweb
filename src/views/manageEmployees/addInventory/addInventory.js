@@ -390,7 +390,7 @@ function AddInventory() {
                   />
                   <CFormFeedback invalid>Only digits allowed</CFormFeedback>
                 </CCol>
-                <CCol md={7}>
+                <CCol md={4}>
                   <CFormLabel htmlFor="IventoryValidation04">Inventory Category</CFormLabel>
                   <CFormSelect
                     //aria-describedby="validationCustom04Feedback"
@@ -413,9 +413,25 @@ function AddInventory() {
                   </CFormSelect>
                   <CFormFeedback invalid>Please select an Inventory Category</CFormFeedback>
                 </CCol>
-                <CCol md={5}>
+                <CCol md={3}>
                   <label htmlFor="InventoryValidation05" className="form-label">
                     Date of Purchase
+                  </label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    required
+                    id="InventoryValidation05"
+                    value={date_of_purchase}
+                    onChange={(e) => {
+                      setdate(e.target.value)
+                    }}
+                  />
+                  <CFormFeedback invalid>Please select a date</CFormFeedback>
+                </CCol>
+                <CCol md={3}>
+                  <label htmlFor="InventoryValidation05" className="form-label">
+                    Date of Expiry
                   </label>
                   <input
                     type="date"

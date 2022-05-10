@@ -144,7 +144,7 @@ function ViewInv() {
           <AppHeader />
           <div className="body flex-grow-1 px-3">
             <CContainer xl>
-              <div style={{ overflow: 'scroll', height: '348px' }}>
+              <div style={{ overflow: 'scroll', height: '335px' }}>
                 <CTable striped>
                   <CTableHead>
                     <CTableRow>
@@ -267,7 +267,7 @@ function ViewInv() {
                       }}
                     />
                   </CCol>
-                  <CCol md={7}>
+                  <CCol md={4}>
                     <CFormLabel htmlFor="IventoryValidationChange05">Inventory Category</CFormLabel>
                     <CFormSelect
                       //aria-describedby="validationCustom04Feedback"
@@ -295,7 +295,23 @@ function ViewInv() {
                     </CFormSelect>
                     <CFormFeedback invalid>Please select an Inventory Category</CFormFeedback>
                   </CCol>
-                  <CCol md={5}>
+                  <CCol md={4}>
+                    <label htmlFor="InventoryValidationChange06" className="form-label">
+                      Date of Purchase
+                    </label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      required
+                      id="InventoryValidationChange06"
+                      value={date_of_purchase}
+                      onChange={(e) => {
+                        setdate(e.target.value)
+                      }}
+                    />
+                    <CFormFeedback invalid>Please provide a date</CFormFeedback>
+                  </CCol>
+                  <CCol md={4}>
                     <label htmlFor="InventoryValidationChange06" className="form-label">
                       Date of Purchase
                     </label>
@@ -323,7 +339,14 @@ function ViewInv() {
                     </CFormFeedback>
                   </CCol>
                   <CCol md={6}>
-                    <CButton color="primary" type="submit">
+                    <CButton
+                      color="primary"
+                      type="submit"
+                      style={{
+                        marginBottom: '2%',
+                        width: '30%',
+                      }}
+                    >
                       Edit Inventory Item
                     </CButton>
                   </CCol>
