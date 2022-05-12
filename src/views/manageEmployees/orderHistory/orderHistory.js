@@ -12,14 +12,19 @@ import {
   CTableDataCell,
   CTableBody,
   CContainer,
+  CFormSelect,
+  CCol,
+  CRow,
   CDropdown,
   CDropdownItem,
   CDropdownToggle,
   CDropdownMenu,
 } from '@coreui/react'
+import { cilChevronTop, cilChevronBottom } from '@coreui/icons'
 import { useEffect, useState } from 'react'
 import { DocsLink } from 'src/components'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../components/index'
+import CIcon from '@coreui/icons-react'
 const ip = process.env.REACT_APP_ADDR
 
 function Orderhistory() {
@@ -102,26 +107,53 @@ function Orderhistory() {
                     <CTableHeaderCell scope="col">Sno</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Order Time</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Total Amount</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Payment Method</CTableHeaderCell>
+                    <CContainer>
+                      <CRow>
+                        <CCol>
+                          <CTableHeaderCell scope="col">Payment Method</CTableHeaderCell>
+                        </CCol>
+                        <CCol>
+                          <CRow>
+                            <CIcon icon={cilChevronTop} customClassName="cil-chevron-top-alt" />
+                          </CRow>
+                          <CRow>
+                            <CIcon
+                              icon={cilChevronBottom}
+                              customClassName="cil-chevron-bottom-alt-4x"
+                              style={{ fontSize: '0.73px' }}
+                            />
+                          </CRow>
+                        </CCol>
+                      </CRow>
+                    </CContainer>
                     <CTableHeaderCell scope="col">Rating</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Review</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Table no</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Chef</CTableHeaderCell>
                     <CTableHeaderCell scope="col">
-                      <select
-                        onChange={(e) => {
-                          setStat(e.target.value)
-                        }}
-                      >
-                        <option selected value="all">
-                          All
-                        </option>
-                        <option value="n assg">Not Assigned</option>
-                        <option value="assigned">Assigned</option>
-                        <option value="ready">Ready</option>
-                        <option value="serving">Serving</option>
-                        <option value="served">Served</option>
-                      </select>
+                      <CCol>
+                        {/* <CRow>
+                          <CIcon icon={cilFilter} customClassName="cis-filter" />
+                        </CRow> */}
+                        <CRow>
+                          <CFormSelect
+                            size="sm"
+                            onChange={(e) => {
+                              setStat(e.target.value)
+                            }}
+                          >
+                            <option selected value="all">
+                              All
+                            </option>
+                            <option value="n assg">Not Assigned</option>
+                            <option value="assigned">Assigned</option>
+                            <option value="ready">Ready</option>
+                            <option value="serving">Serving</option>
+                            <option value="served">Served</option>
+                          </CFormSelect>
+                        </CRow>
+                        <CRow> Order Status </CRow>
+                      </CCol>
                     </CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
