@@ -33,20 +33,43 @@ const AppHeader = () => {
     history.push('/')
   }
   return (
-    <CHeader position="sticky" className="mb-4">
-      <CContainer fluid>
-        <CHeaderToggler
+    <CHeader  position="sticky" className="mb-4">
+      {/* <CContainer  fluid> */}
+      <span>
+            <text>
+              DineEase
+            </text>
+           
+            
+          </span>
+          <span className="avatartext">
+          <span style={{backgroundColor:'grey',borderRadius:120,margin:5,padding:15,justifyContent:'center'}}>
+            {dispname[0]}
+            
+             
+            </span> 
+               {dispname} 
+        
+            <button style={{marginLeft:10,color:'white',backgroundColor:'grey',borderRadius:30}} onClick={logOut}>
+                LogOut
+              </button>  
+            
+            </span>
+            
+       
+      
+        {/* <CHeaderToggler
           className="ps-1"
           onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
         >
           <CIcon icon={cilMenu} size="lg" />
-        </CHeaderToggler>
-        <CHeaderBrand className="mx-auto d-md-none" to="/">
+        </CHeaderToggler> */}
+        {/* <CHeaderBrand className="mx-auto d-md-none" to="/">
           <CIcon icon={logo} height={48} alt="Logo" />
         </CHeaderBrand>
-        <CHeaderNav className="d-none d-md-flex me-auto">
+        <CHeaderNav >
           <CNavItem>
-            <CNavLink to="/dashboard" component={NavLink} activeClassName="active" className="hh">
+            <CNavLink to="/dashboard" component={NavLink} activeClassName="active" className='hh' >
               Dashboard
             </CNavLink>
           </CNavItem>
@@ -61,13 +84,52 @@ const AppHeader = () => {
             </CAvatar>
           </CNavItem>
           <CNavItem>
-            <div className="btnava">
-              <CButton color="dark" shape="rounded-pill" onClick={logOut}>
+            <div className="btnava"> 
+               <CButton color="dark" shape="rounded-pill" onClick={logOut}>
                 LogOut
-              </CButton>
+              </CButton> 
+             </div>
+          </CNavItem>  */}
+          {/* <div style={{width: 550, backgroundColor:'brown'}}></div>
+          <div style={{width: 100,}}>
+          <text> 
+              {dispname}
+              </text>
+              </div>
+          
+          <div style={{width: 100,}}>
+            <text> 
+              {dispname[0]}
+              </text>
+              </div>
+             
+             */}
+            
+         
+          {/* <CNavItem> 
+               <CButton color="dark" shape="rounded-pill" onClick={logOut}>
+                LogOut
+              </CButton> 
+          </CNavItem> */}
+         
+          {/* <CNavItem>
+            <div className="avatartext">
+              <CNavbarText> {dispname} </CNavbarText>
             </div>
           </CNavItem>
-        </CHeaderNav>
+          <CNavItem>
+            <CAvatar color="secondary" size="lg">
+              {dispname[0]}
+            </CAvatar>
+          </CNavItem>
+          <CNavItem>
+            <div className="btnava"> 
+               <CButton color="dark" shape="rounded-pill" onClick={logOut}>
+                LogOut
+              </CButton> 
+             </div>
+          </CNavItem> */}
+        {/* </CHeaderNav> 
         <CHeaderNav className="ms-3">
           <AppHeaderDropdown />
         </CHeaderNav>
@@ -75,7 +137,7 @@ const AppHeader = () => {
       <CHeaderDivider />
       <CContainer fluid>
         <AppBreadcrumb />
-      </CContainer>
+      </CContainer> */}
     </CHeader>
   )
 }

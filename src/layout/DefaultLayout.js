@@ -5,9 +5,11 @@ const DefaultLayout = () => {
   return (
     <div>
       <AppSidebar />
-      <div className="wrapper d-flex flex-column min-vh-100 bg-light">
+      {/* <div className="wrapper d-flex flex-column min-vh-100 bg-light"> */}
+      <div style={{width:'100%',backgroundColor:'black'}}>
         <AppHeader />
-        <div className="body flex-grow-1 px-3">
+        {/* <div className="body flex-grow-1 px-3"> */}
+        <div style={{width:'100%'}}>
           <AppContent />
         </div>
         <AppFooter />

@@ -23,6 +23,7 @@ export default function Login() {
   const history = useHistory()
   const ip = process.env.REACT_APP_ADDR
 
+
   useEffect(() => {
     if (localStorage.getItem('user-info')) {
       history.push({
