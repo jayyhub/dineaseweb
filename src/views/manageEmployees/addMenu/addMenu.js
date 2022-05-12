@@ -72,9 +72,9 @@ function AddMenu() {
   const [item_name, setitemname] = useState('')
   const [item_description, setdesc] = useState('')
   const [menu_status, setstatus] = useState('')
-  const [category_id, setcat] = useState('')
+  const [icategory_id, setcat] = useState('')
   const [cat_name, setCatName] = useState('')
-  const [icategory_id, setfood] = useState('')
+  const [category_id, setfood] = useState('')
   const [icat_name, setiCatName] = useState('')
   const [item_price1, setprice] = useState('')
   const [inameerr, setierr] = useState(false)
@@ -121,6 +121,7 @@ function AddMenu() {
       category_id,
       icategory_id,
     }
+    //console.log('NEWLY CREATED CHECK POINT')
     //console.log(data)
     fetch(`http://` + ip + `:5000/api/menu`, {
       method: 'POST',

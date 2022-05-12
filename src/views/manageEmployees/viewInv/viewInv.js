@@ -143,8 +143,8 @@ function ViewInv() {
         <div className="wrapper d-flex flex-column min-vh-100 bg-light">
           <AppHeader />
           <div className="body flex-grow-1 px-3">
-            <CContainer lg>
-              <div className="half">
+            <CContainer xl>
+              <div style={{ overflow: 'scroll', height: '335px' }}>
                 <CTable striped>
                   <CTableHead>
                     <CTableRow>
@@ -170,7 +170,14 @@ function ViewInv() {
                         <CTableDataCell> {items.total_cost} </CTableDataCell>
                         <CTableDataCell>
                           {/* <button onClick={() => selectUser(items.inventory_id)}>Edit</button> */}
-                          <button onClick={() => getUser(items.inventory_id)}>Edit</button>
+                          <CButton
+                            id="edit-inv-button"
+                            onClick={() => getUser(items.inventory_id)}
+                            color="secondary"
+                            style={{ margin: '2%' }}
+                          >
+                            Edit
+                          </CButton>
                         </CTableDataCell>
                       </CTableRow>
                     ))}
@@ -260,7 +267,7 @@ function ViewInv() {
                       }}
                     />
                   </CCol>
-                  <CCol md={7}>
+                  <CCol md={4}>
                     <CFormLabel htmlFor="IventoryValidationChange05">Inventory Category</CFormLabel>
                     <CFormSelect
                       //aria-describedby="validationCustom04Feedback"
@@ -288,7 +295,7 @@ function ViewInv() {
                     </CFormSelect>
                     <CFormFeedback invalid>Please select an Inventory Category</CFormFeedback>
                   </CCol>
-                  <CCol md={5}>
+                  <CCol md={4}>
                     <label htmlFor="InventoryValidationChange06" className="form-label">
                       Date of Purchase
                     </label>
@@ -304,7 +311,23 @@ function ViewInv() {
                     />
                     <CFormFeedback invalid>Please provide a date</CFormFeedback>
                   </CCol>
-                  <CCol xs={12}>
+                  <CCol md={4}>
+                    <label htmlFor="InventoryValidationChange06" className="form-label">
+                      Date of Purchase
+                    </label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      required
+                      id="InventoryValidationChange06"
+                      value={date_of_purchase}
+                      onChange={(e) => {
+                        setdate(e.target.value)
+                      }}
+                    />
+                    <CFormFeedback invalid>Please provide a date</CFormFeedback>
+                  </CCol>
+                  <CCol xs={4}>
                     <CFormCheck
                       type="checkbox"
                       id="invalidCheck01"
@@ -315,8 +338,15 @@ function ViewInv() {
                       You must check the checkbox before submitting.
                     </CFormFeedback>
                   </CCol>
-                  <CCol md={10}>
-                    <CButton color="primary" type="submit">
+                  <CCol md={6}>
+                    <CButton
+                      color="primary"
+                      type="submit"
+                      style={{
+                        marginBottom: '2%',
+                        width: '30%',
+                      }}
+                    >
                       Edit Inventory Item
                     </CButton>
                   </CCol>

@@ -280,7 +280,7 @@ function ViewMenu() {
           <div className="body flex-grow-1 px-3">
             <CContainer xl>
               <div className="half">
-                <CTable bordered align="middle">
+                <CTable striped align="middle">
                   <CTableHead>
                     <CTableRow>
                       <CTableHeaderCell scope="col">ItemID</CTableHeaderCell>
@@ -407,7 +407,7 @@ function ViewMenu() {
                     />
                     <CFormFeedback invalid>Only alphabetic characters allowed</CFormFeedback>
                   </CCol>
-                  <CCol md={4}>
+                  <CCol md={3}>
                     <CFormLabel htmlFor="ItemValidation04">Menu Status</CFormLabel>
                     <CFormSelect
                       //aria-describedby="validationCustom04Feedback"
@@ -501,7 +501,7 @@ function ViewMenu() {
                     </CFormSelect>
                     <CFormFeedback invalid>Please Select a Food Category</CFormFeedback>
                   </CCol>
-                  <CCol xs={12}>
+                  <CCol xs={4}>
                     <CFormCheck
                       type="checkbox"
                       id="invalidCheck"
@@ -512,8 +512,15 @@ function ViewMenu() {
                       You must check the checkbox before submitting.
                     </CFormFeedback>
                   </CCol>
-                  <CCol xs={12}>
-                    <CButton color="primary" type="submit">
+                  <CCol xs={6}>
+                    <CButton
+                      color="primary"
+                      type="submit"
+                      style={{
+                        marginBottom: '2%',
+                        width: '30%',
+                      }}
+                    >
                       Update
                     </CButton>
                   </CCol>
