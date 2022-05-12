@@ -12,14 +12,19 @@ import {
   CTableDataCell,
   CTableBody,
   CContainer,
+  CFormSelect,
+  CCol,
+  CRow,
   CDropdown,
   CDropdownItem,
   CDropdownToggle,
   CDropdownMenu,
 } from '@coreui/react'
+import { cilFilter } from '@coreui/icons'
 import { useEffect, useState } from 'react'
 import { DocsLink } from 'src/components'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../components/index'
+import CIcon from '@coreui/icons-react'
 const ip = process.env.REACT_APP_ADDR
 
 function Orderhistory() {
@@ -108,20 +113,29 @@ function Orderhistory() {
                     <CTableHeaderCell scope="col">Table no</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Chef</CTableHeaderCell>
                     <CTableHeaderCell scope="col">
-                      <select
-                        onChange={(e) => {
-                          setStat(e.target.value)
-                        }}
-                      >
-                        <option selected value="all">
-                          All
-                        </option>
-                        <option value="n assg">Not Assigned</option>
-                        <option value="assigned">Assigned</option>
-                        <option value="ready">Ready</option>
-                        <option value="serving">Serving</option>
-                        <option value="served">Served</option>
-                      </select>
+                      <CCol>
+                        {/* <CRow>
+                          <CIcon icon={cilFilter} customClassName="cis-filter" />
+                        </CRow> */}
+                        <CRow>
+                          <CFormSelect
+                            size="sm"
+                            onChange={(e) => {
+                              setStat(e.target.value)
+                            }}
+                          >
+                            <option selected value="all">
+                              All
+                            </option>
+                            <option value="n assg">Not Assigned</option>
+                            <option value="assigned">Assigned</option>
+                            <option value="ready">Ready</option>
+                            <option value="serving">Serving</option>
+                            <option value="served">Served</option>
+                          </CFormSelect>
+                        </CRow>
+                        <CRow> Order Status </CRow>
+                      </CCol>
                     </CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
