@@ -107,25 +107,98 @@ function Orderhistory() {
                     <CTableHeaderCell scope="col">Sno</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Order Time</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Total Amount</CTableHeaderCell>
-                    <CContainer>
-                      <CRow>
-                        <CCol>
-                          <CTableHeaderCell scope="col">Payment Method</CTableHeaderCell>
-                        </CCol>
-                        <CCol>
-                          <CRow>
-                            <CIcon icon={cilChevronTop} customClassName="cil-chevron-top-alt" />
-                          </CRow>
-                          <CRow>
-                            <CIcon
-                              icon={cilChevronBottom}
-                              customClassName="cil-chevron-bottom-alt-4x"
-                              style={{ fontSize: '0.73px' }}
-                            />
-                          </CRow>
-                        </CCol>
+                    <CTableHeaderCell
+                      scope="col"
+                      style={{
+                        backgroundColor: 'red',
+                        // height: '150px',
+                        // width: '150px',
+                      }}
+                    >
+                      <span>Payment Method</span>
+                      <CContainer>
+                        <CRow>
+                          <button>Hello</button>
+                        </CRow>
+                        <CRow>
+                          <button>Hello</button>
+                        </CRow>
+                      </CContainer>
+                      {/* <CRow>
+                        <CIcon
+                          icon={cilChevronTop}
+                          customClassName="cil-chevron-top-alt"
+                          style={{
+                            height: '15px',
+                            width: '20px',
+                            backgroundColor: 'red',
+                            margin: '0px',
+                            padding: '0px',
+                          }}
+                        />
                       </CRow>
-                    </CContainer>
+                      <CRow>
+                        <CIcon
+                          icon={cilChevronBottom}
+                          customClassName="cil-chevron-bottom-alt"
+                          style={{
+                            height: '15px',
+                            width: '20px',
+                            backgroundColor: 'red',
+                            margin: '0px',
+                            padding: '0px',
+                          }}
+                        />
+                      </CRow> */}
+                    </CTableHeaderCell>
+                    {/* <CContainer
+                      style={{
+                        backgroundColor: 'yellow',
+                        // height: '40px',
+                        // width: '200px',
+                      }}
+                    >
+                      <CCol>
+                        <CTableHeaderCell
+                          scope="col"
+                          style={{
+                            backgroundColor: 'red',
+                            // height: '150px',
+                            // width: '150px',
+                          }}
+                        >
+                          Payment Method
+                        </CTableHeaderCell>
+                      </CCol>
+                      <CCol>
+                        <CRow>
+                          <CIcon
+                            icon={cilChevronTop}
+                            customClassName="cil-chevron-top-alt"
+                            style={{
+                              height: '15px',
+                              width: '20px',
+                              backgroundColor: 'red',
+                              margin: '0px',
+                              padding: '0px',
+                            }}
+                          />
+                        </CRow>
+                        <CRow>
+                          <CIcon
+                            icon={cilChevronBottom}
+                            customClassName="cil-chevron-bottom-alt"
+                            style={{
+                              height: '15px',
+                              width: '20px',
+                              backgroundColor: 'red',
+                              margin: '0px',
+                              padding: '0px',
+                            }}
+                          />
+                        </CRow>
+                      </CCol>
+                    </CContainer> */}
                     <CTableHeaderCell scope="col">Rating</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Review</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Table no</CTableHeaderCell>

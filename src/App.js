@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { HashRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import './scss/style.scss'
 import Dashboard from './views/dashboard/Dashboard'
 import AddEmployee from './views/manageEmployees/addEmployee/addEmployee'
@@ -25,7 +25,7 @@ const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 class App extends Component {
   render() {
     return (
-      <HashRouter>
+      <BrowserRouter>
         <React.Suspense fallback={loading}>
           <Switch>
             {/* <Route exact path="/login" name="Login Page" render={(props) => <Login {...props} />} /> */}
@@ -101,7 +101,7 @@ class App extends Component {
             />
           </Switch>
         </React.Suspense>
-      </HashRouter>
+      </BrowserRouter>
     )
   }
 }
