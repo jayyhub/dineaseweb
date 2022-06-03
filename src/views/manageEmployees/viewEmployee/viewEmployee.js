@@ -52,7 +52,7 @@ function ViewEmployee(props) {
                       <CTableDataCell> {items.users_name} </CTableDataCell>
                       <CTableDataCell> {items.usertype} </CTableDataCell>
                       <CTableDataCell> {items.NIC} </CTableDataCell>
-                      <CTableDataCell> {items.phone_no} </CTableDataCell>
+                      <CTableDataCell> 0{items.phone_no} </CTableDataCell>
                     </CTableRow>
                   ))}
                 </CTableBody>

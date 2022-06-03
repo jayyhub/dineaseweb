@@ -144,7 +144,10 @@ function ViewInv() {
           <AppHeader />
           <div className="body flex-grow-1 px-3">
             <CContainer xl>
-              <div style={{ overflow: 'scroll', height: '335px' }}>
+              <h3>
+                <u>Inventory List</u>
+              </h3>
+              <div style={{ overflow: 'scroll', height: '293px' }}>
                 <CTable striped>
                   <CTableHead>
                     <CTableRow>
@@ -184,12 +187,15 @@ function ViewInv() {
                   </CTableBody>
                 </CTable>
               </div>
+              <h3>
+                <u>Edit Inventory Item</u>
+              </h3>
               <CContainer
                 style={{
                   border: '2px solid grey',
                   borderRadius: '12px',
                   marginTop: '2%',
-                  marginBottom: '2%',
+                  marginBottom: '1%',
                   overflow: 'hidden',
                 }}
               >

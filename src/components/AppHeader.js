@@ -33,7 +33,7 @@ const AppHeader = () => {
     history.push('/')
   }
   return (
-    <CHeader position="sticky" className="mb-4">
+    <CHeader position="sticky" className="mb-1">
       <CContainer fluid>
         <CHeaderToggler
           className="ps-1"

@@ -86,6 +86,12 @@ function AddInventory() {
   //const [category_id, setctype] = useState('')
   const [invcategory_nam, setInvCatName] = useState('')
 
+  // {CODE FOR AWS}
+  const [file, setFile] = useState()
+  const [description, setDescription] = useState('')
+  const [images, setImages] = useState([])
+  // {CODE FOR AWS}
+
   const [inverr, setinverr] = useState('')
   const [validated, setValidated] = useState(false)
   const handleSubmit = (event) => {
@@ -186,6 +192,20 @@ function AddInventory() {
       }
     })
   }
+
+  // {CODE FOR AWS}
+  const fileSelected = (event) => {
+    const file = event.target.files[0]
+    setFile(file)
+  }
+
+  const submit = async (event) => {
+    event.preventDefault()
+    console.log('I am Clicked')
+    //setImages([])
+  }
+  // {CODE FOR AWS}
+
   return (
     <>
       <div>
@@ -315,11 +335,14 @@ function AddInventory() {
               </form>
                   */}
               <CForm
-                className="row g-3 needs-validation"
+                className="row g-3 needs-validation m-2"
                 noValidate
                 validated={validated}
                 onSubmit={handleSubmit}
               >
+                <h3>
+                  <u>Add a new Inventory Item</u>
+                </h3>
                 <CCol md={4}>
                   <CFormLabel htmlFor="InvetoryValidation01">Inventory Name</CFormLabel>
                   <CFormInput
@@ -445,13 +468,42 @@ function AddInventory() {
                   />
                   <CFormFeedback invalid>Please select a date</CFormFeedback>
                 </CCol>
-                <CCol md={10}>
-                  <CButton color="primary" type="submit">
+                <div
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <CButton
+                    color="primary"
+                    type="submit"
+                    style={{
+                      width: '200px',
+                    }}
+                  >
                     Submit form
                   </CButton>
-                </CCol>
+                </div>
               </CForm>
             </CContainer>
+            {/* {CODE FOR AWS CONFIGURATION} */}
+            <form onSubmit={submit}>
+              <input onChange={fileSelected} type="file" accept="image/*"></input>
+              <input
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                type="text"
+              ></input>
+              <button type="submit">Submit</button>
+            </form>
+
+            {images.map((image) => (
+              <div key={image}>
+                <img src={image}></img>
+              </div>
+            ))}
+            {/* {CODE FOR AWS CONFIGURATION} */}
           </div>
           <AppFooter />
         </div>

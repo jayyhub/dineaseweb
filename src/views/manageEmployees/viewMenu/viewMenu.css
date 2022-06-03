@@ -17,7 +17,8 @@
 
 .half {
     overflow: scroll;
-    height: 319px;
+    height: 290px;
+    margin-bottom: 5px;
 }
 
 .it {

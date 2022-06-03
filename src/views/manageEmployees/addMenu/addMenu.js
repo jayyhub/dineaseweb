@@ -178,8 +178,11 @@ function AddMenu() {
         <AppSidebar />
         <div className="wrapper d-flex flex-column min-vh-100 bg-light">
           <AppHeader />
-          <div className="body flex-grow-1 px-3">
+          <div className="body flex-grow-1 px-3 m-4">
             <CContainer lg>
+              <h3>
+                <u>Add a new Menu Item</u>
+              </h3>
               {/* <form className="row g-3" onSubmit={saveEmp}> */}
               <form className="row g-3" onSubmit={MenuAddHandler}>
                 <div className="col-md-6">
@@ -199,23 +202,7 @@ function AddMenu() {
                   ></input>
                   {inameerr ? <div style={{ color: 'red' }}>Item Name Already Exist</div> : <></>}
                 </div>
-                <div className="col-md-9">
-                  <label htmlFor="inputPassword4" className="form-label">
-                    Item Description
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    required
-                    //pattern="[A-Za-z]+"
-                    value={item_description}
-                    onChange={(e) => {
-                      setdesc(e.target.value)
-                    }}
-                    id="inputPassword4"
-                  ></input>
-                </div>
-                <div className="col-md-4">
+                <div className="col-md-6">
                   <label htmlFor="inputState" className="form-label">
                     Menu Status
                   </label>
@@ -232,7 +219,39 @@ function AddMenu() {
                     <option>unavailable</option>
                   </select>
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-6">
+                  <label htmlFor="inputPassword4" className="form-label">
+                    Item Description
+                  </label>
+                  {/* <input
+                    type="text"
+                    className="form-control"
+                    required
+                    //pattern="[A-Za-z]+"
+                    value={item_description}
+                    style={{
+                      height: '100px',
+                    }}
+                    onChange={(e) => {
+                      setdesc(e.target.value)
+                    }}
+                    id="inputPassword4"
+                  ></input> */}
+                  <textarea
+                    type="text"
+                    cols="40"
+                    rows="4"
+                    className="form-control"
+                    required
+                    //pattern="[A-Za-z]+"
+                    value={item_description}
+                    onChange={(e) => {
+                      setdesc(e.target.value)
+                    }}
+                    id="inputPassword4"
+                  ></textarea>
+                </div>
+                <div className="col-md-3">
                   <label htmlFor="inputState" className="form-label">
                     Food Category
                   </label>
@@ -259,7 +278,7 @@ function AddMenu() {
                     ))}
                   </select>
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-3">
                   <label htmlFor="inputState" className="form-label">
                     Item Category
                   </label>
@@ -302,8 +321,20 @@ function AddMenu() {
                     }}
                   ></input>
                 </div>
-                <div className="col-12">
-                  <button type="submit" className="btn btn-primary">
+                <div
+                  style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    style={{
+                      width: '200px',
+                    }}
+                  >
                     Add Menu
                   </button>
                 </div>

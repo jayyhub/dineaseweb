@@ -279,6 +279,7 @@ function ViewMenu() {
           <AppHeader />
           <div className="body flex-grow-1 px-3">
             <CContainer xl>
+              <h3>Menu List</h3>
               <div className="half">
                 <CTable striped align="middle">
                   <CTableHead>
@@ -316,12 +317,13 @@ function ViewMenu() {
                 </CTable>
               </div>
 
+              <h3>Edit Menu Item</h3>
               <CContainer
                 style={{
                   border: '2px solid grey',
                   borderRadius: '12px',
-                  marginTop: '2%',
-                  marginBottom: '2%',
+                  marginTop: '0%',
+                  marginBottom: '1%',
                   overflow: 'hidden',
                 }}
               >

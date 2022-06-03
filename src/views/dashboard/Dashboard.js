@@ -1,7 +1,6 @@
-import React, { lazy, useEffect } from 'react'
+import React, { lazy, useEffect, useState } from 'react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../components/index'
 import {
-  // CAvatar,
   CButton,
   CButtonGroup,
   CCard,
@@ -20,15 +19,13 @@ import {
   CTableHeaderCell,
   CTableRow,
   CContainer,
-  CChart,
   CListGroup,
   CListGroupItem,
   CWidgetStatsA,
   CWidgetStatsB,
-  CWidgetStatsC,
-  CWidgetStatsD,
   CWidgetStatsE,
-  CWidgetStatsF,
+  CSpinner,
+  CPlaceholder,
 } from '@coreui/react'
 //import { CChart } from '@coreui/Users'
 import './dashboard.css'
@@ -58,13 +55,76 @@ import {
   cilUserFemale,
   cilArrowTop,
 } from '@coreui/icons'
+import DoughnutChart from './doughnutChart'
+import ListGroup from './listGroup'
+import Table from './table'
+import StatWidgetB from './statWidgetB'
+import StatWidgetA from './statWidgetA'
+import StatWidgetE from './statWidgetE'
+import BarChart from './barChart'
+import StatWidgetA1 from './statWidgetA1'
+import AnimatedNumber from 'react-animated-numbers'
+
+const ip = process.env.REACT_APP_ADDR
+
+function roundNearest100(num) {
+  return Math.round(num / 100) * 200
+}
 
 const Dashboard = (props) => {
-  const random = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1) + min)
+  const [db_data, setDbData] = useState([])
+  const [stat, setStat] = useState(false)
+
+  const loadingStyle = {
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    height: '240px',
   }
-  //console.log('page2')
-  //console.log(props)
+
+  const loadingStyle1 = {
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    height: '150px',
+  }
+
+  const centreStyle = {
+    justifyContent: 'flex-end',
+    alignItems: 'baseline',
+    display: 'flex',
+    fontSize: '40px',
+    fontWeight: 'lighter',
+    //height: '180px',
+  }
+
+  const divStyle = {
+    backgroundColor: 'green',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    display: 'flex',
+  }
+
+  const mainDivStyle = {
+    backgroundColor: 'white',
+    // alignItems: 'center',
+    display: 'flex',
+    border: '2px solid black',
+    height: '100%',
+  }
+
+  useEffect(() => {
+    fetch(`http://` + ip + `:5000/api/dashboardapi`).then((result) => {
+      if (result.status == 200) {
+        result.json().then((resp) => {
+          console.warn('result', resp)
+          setDbData(resp)
+          setStat(true)
+        })
+      }
+    })
+  }, [])
+
   return (
     <>
       <div>
@@ -72,378 +132,271 @@ const Dashboard = (props) => {
         <div className="wrapper d-flex flex-column min-vh-100 bg-light">
           <AppHeader />
           <div className="body flex-grow-1 px-3">
-            <CContainer>
-              <CRow>
-                <CCol xl={7}>
-                  <h1>Dashboard</h1>
-                  <h3>Statistics</h3>
-                  <CContainer
-                    style={{
-                      border: '2px solid grey',
-                      borderRadius: '12px',
-                      marginTop: '0%',
-                      marginBottom: '1%',
-                      //overflow: 'hidden',
-                      height: '43%',
-                      padding: '0px',
-                    }}
-                  >
-                    <CRow>
-                      <CCol xs={4}>
-                        <CChartDoughnut
-                          //style={{ margin: '0px', padding: '0px' }}
-                          data={{
-                            //labels: ['VueJs'],
-                            datasets: [
-                              {
-                                backgroundColor: ['#41B883', '#FFFFFF'],
-                                data: [40, 100],
-                              },
-                            ],
-                          }}
-                        />
-                        <h6 style={{ textAlign: 'center' }}>Text 1</h6>
+            <CRow>
+              <CCol xl={7} style={{ padding: '5px' }}>
+                <h1>Dashboard</h1>
+                <h3>Statistics</h3>
+                <div
+                  style={{
+                    //backgroundColor: 'white',
+                    border: '2px solid grey',
+                    borderRadius: '12px',
+                    padding: '2px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  {stat ? (
+                    <>
+                      <CCol
+                        xs={4}
+                        style={{
+                          //backgroundColor: 'blue',
+                          padding: '0px 1px 0px 2px',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <DoughnutChart text="Current Orders In Queue" value={db_data[0]} />
                       </CCol>
-                      <CCol xs={4}>
-                        <CChartDoughnut
-                          data={{
-                            labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
-                            datasets: [
-                              {
-                                backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-                                data: [40, 20, 80, 10],
-                              },
-                            ],
+                      <CCol
+                        xs={4}
+                        style={{
+                          backgroundColor: 'black',
+                          padding: '0px 1px 0px 1px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <div
+                          style={{
+                            borderRadius: '12px',
+                            backgroundColor: '#DDDDDD',
+                            padding: '10px',
+                            boxShadow:
+                              'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px',
                           }}
-                        />
-                      </CCol>
-                      <CCol xs={4}>
-                        <CChartDoughnut
-                          data={{
-                            labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
-                            datasets: [
-                              {
-                                backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-                                data: [40, 20, 80, 10],
-                              },
-                            ],
-                          }}
-                        />
-                      </CCol>
-                    </CRow>
-                  </CContainer>
-                  <h3>Recent Orders</h3>
-                  <CContainer
-                    style={{
-                      border: '2px solid grey',
-                      borderRadius: '12px',
-                      marginTop: '0%',
-                      marginBottom: '0%',
-                      overflow: 'hidden',
-                      height: '34%',
-                      padding: '0px',
-                    }}
-                  >
-                    <CRow>
-                      <CListGroup>
-                        <CListGroupItem component="button" active>
-                          Cras justo odio
-                        </CListGroupItem>
-                        <CListGroupItem component="button">Dapibus ac facilisis in</CListGroupItem>
-                        <CListGroupItem component="button">Morbi leo risus</CListGroupItem>
-                        <CListGroupItem component="button">Porta ac consectetur ac</CListGroupItem>
-                        <CListGroupItem component="button" disabled>
-                          Vestibulum at eros
-                        </CListGroupItem>
-                      </CListGroup>
-                    </CRow>
-                  </CContainer>
-                  {/* <CRow>
-                    <CContainer
-                      style={{
-                        border: '2px solid grey',
-                        borderRadius: '12px',
-                        marginTop: '2%',
-                        marginBottom: '2%',
-                        overflow: 'hidden',
-                      }}
-                    >
-                      <CListGroup>
-                        <CListGroupItem component="button" active>
-                          Cras justo odio
-                        </CListGroupItem>
-                        <CListGroupItem component="button">Dapibus ac facilisis in</CListGroupItem>
-                        <CListGroupItem component="button">Morbi leo risus</CListGroupItem>
-                        <CListGroupItem component="button">Porta ac consectetur ac</CListGroupItem>
-                        <CListGroupItem component="button" disabled>
-                          Vestibulum at eros
-                        </CListGroupItem>
-                      </CListGroup>
-                    </CContainer>
-                  </CRow> */}
-                </CCol>
-                <CCol xl={5}>
-                  {/* <CChartDoughnut
-                    data={{
-                      labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
-                      datasets: [
-                        {
-                          backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-                          data: [40, 20, 80, 10],
-                        },
-                      ],
-                    }}
-                  /> */}
-                  <CRow>
-                    <h3>Order Complains</h3>
-                    <CContainer
-                      style={{
-                        border: '2px solid grey',
-                        borderRadius: '12px',
-                        marginTop: '0%',
-                        marginBottom: '0.5%',
-                        height: '230px',
-                        padding: '0%',
-                        backgroundColor: '#d9d9d9',
-                      }}
-                    >
-                      <CTable striped responsive color="danger">
-                        <CTableHead color="dark">
-                          <CTableRow>
-                            <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Class</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Heading</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Heading</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Heading</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Heading</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Heading</CTableHeaderCell>
-                          </CTableRow>
-                        </CTableHead>
-                        <CTableBody>
-                          <CTableRow>
-                            <CTableHeaderCell scope="row">1</CTableHeaderCell>
-                            <CTableDataCell>Mark</CTableDataCell>
-                            <CTableDataCell>Otto</CTableDataCell>
-                            <CTableDataCell>@mdo</CTableDataCell>
-                            <CTableDataCell>Otto</CTableDataCell>
-                            <CTableDataCell>@mdo</CTableDataCell>
-                          </CTableRow>
-                          <CTableRow>
-                            <CTableHeaderCell scope="row">2</CTableHeaderCell>
-                            <CTableDataCell>Jacob</CTableDataCell>
-                            <CTableDataCell>Thornton</CTableDataCell>
-                            <CTableDataCell>@fat</CTableDataCell>
-                          </CTableRow>
-                          <CTableRow>
-                            <CTableHeaderCell scope="row">3</CTableHeaderCell>
-                            <CTableDataCell colSpan="2">Larry the Bird</CTableDataCell>
-                            <CTableDataCell>@twitter</CTableDataCell>
-                          </CTableRow>
-                        </CTableBody>
-                      </CTable>
-                    </CContainer>
-                  </CRow>
-                  <CRow>
-                    <h3>Insights</h3>
-                    <CContainer
-                      style={{
-                        border: '2px solid grey',
-                        borderRadius: '12px',
-                        marginTop: '0%',
-                        marginBottom: '0%',
-                        height: '300px',
-                        padding: '0.5%',
-                        backgroundColor: '#d9d9d9',
-                        overflow: 'hidden',
-                      }}
-                    >
-                      <CRow>
-                        <CCol xs={6}>
-                          <CWidgetStatsB
-                            className="mb-3"
-                            progress={{ color: 'success', value: 75 }}
-                            text="Widget helper text"
-                            title="Widget title"
-                            value="89.9%"
-                          />
-                        </CCol>
-                        <CCol xs={6}>
-                          <CWidgetStatsB
-                            className="mb-3"
-                            progress={{ color: 'success', value: 75 }}
-                            text="Widget helper text"
-                            title="Widget title"
-                            value="89.9%"
-                          />
-                        </CCol>
-                      </CRow>
-                      <CRow>
-                        <CCol xs={6}>
-                          <CWidgetStatsA
-                            className="mb-4"
-                            color="danger"
-                            value={
-                              <>
-                                $9.000{' '}
-                                <span className="fs-6 fw-normal">
-                                  (40.9% <CIcon icon={cilArrowTop} />)
-                                </span>
-                              </>
-                            }
-                            title="Widget title"
-                            chart={
-                              <CChartBar
-                                className="mt-3 mx-3"
-                                style={{ height: '40px' }}
-                                data={{
-                                  labels: [
-                                    'January',
-                                    'February',
-                                    'March',
-                                    'April',
-                                    'May',
-                                    'June',
-                                    'July',
-                                    'August',
-                                    'September',
-                                    'October',
-                                    'November',
-                                    'December',
-                                    'January',
-                                    'February',
-                                    'March',
-                                    'April',
-                                  ],
-                                  datasets: [
-                                    {
-                                      label: 'My First dataset',
-                                      backgroundColor: 'rgba(255,255,255,.2)',
-                                      borderColor: 'rgba(255,255,255,.55)',
-                                      data: [
-                                        78, 81, 80, 45, 34, 12, 40, 85, 65, 23, 12, 98, 34, 84, 67,
-                                        82,
-                                      ],
-                                      barPercentage: 0.6,
-                                    },
-                                  ],
-                                }}
-                                options={{
-                                  maintainAspectRatio: false,
-                                  plugins: {
-                                    legend: {
-                                      display: false,
-                                    },
-                                  },
-                                  scales: {
-                                    x: {
-                                      grid: {
-                                        display: false,
-                                        drawTicks: false,
-                                      },
-                                      ticks: {
-                                        display: false,
-                                      },
-                                    },
-                                    y: {
-                                      grid: {
-                                        display: false,
-                                        drawBorder: false,
-                                        drawTicks: false,
-                                      },
-                                      ticks: {
-                                        display: false,
-                                      },
-                                    },
-                                  },
-                                }}
+                        >
+                          <div style={{ fontSize: 24 }}>Current Month Sales</div>
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <div style={{ fontSize: 40 }}>PKR</div>
+                            <div style={{ paddingBottom: '2px' }}>
+                              <AnimatedNumber
+                                includeComma={true}
+                                animateToNumber={db_data[1][0].money_earned}
+                                fontStyle={{ fontSize: 40, fontWeight: 600 }}
+                                configs={[{ mass: 1, tension: 260, friction: 70 }]}
                               />
-                            }
+                            </div>
+                          </div>
+                          <div style={{ fontSize: 18 }}>
+                            Previous Month: PKR {db_data[1][1].money_earned}
+                          </div>
+                        </div>
+                      </CCol>
+                      <CCol
+                        xs={4}
+                        style={{
+                          backgroundColor: 'brown',
+                          padding: '0px 2px 0px 1px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <div
+                          style={{
+                            borderRadius: '12px',
+                            backgroundColor: '#DDDDDD',
+                            padding: '10px',
+                            boxShadow:
+                              'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px',
+                          }}
+                        >
+                          <div style={{ fontSize: 24 }}>Current Year Sales</div>
+                          <div
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <div style={{ fontSize: 40 }}>PKR</div>
+                            <div style={{ paddingBottom: '2px' }}>
+                              <AnimatedNumber
+                                includeComma={true}
+                                animateToNumber={db_data[2][0].money_earned}
+                                fontStyle={{ fontSize: 40, fontWeight: 600 }}
+                                configs={[{ mass: 1, tension: 260, friction: 70 }]}
+                              />
+                            </div>
+                          </div>
+                          <div style={{ fontSize: 18 }}>
+                            Previous Year: PKR {db_data[2][1].money_earned}
+                          </div>
+                        </div>
+                      </CCol>
+                    </>
+                  ) : (
+                    <>
+                      <CCol xs={4} style={loadingStyle}>
+                        <CSpinner />
+                      </CCol>
+                      <CCol xs={4} style={loadingStyle}>
+                        <CSpinner />
+                      </CCol>
+                      <CCol xs={4} style={loadingStyle}>
+                        <CSpinner />
+                      </CCol>
+                    </>
+                  )}
+                </div>
+                <h3>Recent Orders</h3>
+                <div
+                  style={{
+                    border: '1px solid grey',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {stat ? (
+                    <ListGroup value={db_data[3]} />
+                  ) : (
+                    <>
+                      <CPlaceholder component="p" animation="wave">
+                        <CPlaceholder xs={11} size="lg" />
+                        <CPlaceholder xs={10} size="lg" />
+                        <CPlaceholder xs={9} size="lg" />
+                        <CPlaceholder xs={8} size="lg" />
+                        <CPlaceholder xs={8} size="lg" />
+                        <CPlaceholder xs={7} size="lg" />
+                        <CPlaceholder xs={7} size="lg" />
+                        <CPlaceholder xs={6} size="lg" />
+                      </CPlaceholder>
+                    </>
+                  )}
+                </div>
+              </CCol>
+              <CCol xl={5} style={{ padding: '5px' }}>
+                <h3>Order Complains</h3>
+                <div
+                  style={{
+                    border: '2px solid grey',
+                    borderRadius: '12px',
+                    padding: '2px',
+                    backgroundColor: '#d9d9d9',
+                  }}
+                >
+                  {stat ? (
+                    <Table value={db_data[4]} />
+                  ) : (
+                    <>
+                      <CPlaceholder component="p" animation="glow">
+                        <CPlaceholder xs={11} size="lg" />
+                        <CPlaceholder xs={10} size="lg" />
+                        <CPlaceholder xs={9} size="lg" />
+                        <CPlaceholder xs={9} size="lg" />
+                        <CPlaceholder xs={8} size="lg" />
+                        <CPlaceholder xs={8} size="lg" />
+                        <CPlaceholder xs={7} size="lg" />
+                        <CPlaceholder xs={7} size="lg" />
+                        <CPlaceholder xs={6} size="lg" />
+                      </CPlaceholder>
+                    </>
+                  )}
+                </div>
+                <h3>Insights</h3>
+                <div
+                  style={{
+                    border: '2px solid grey',
+                    borderRadius: '10px',
+                    backgroundColor: '#d9d9d9',
+                  }}
+                >
+                  {stat ? (
+                    <>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <CCol xs={6}>
+                          <StatWidgetB text="Current Employees" value={db_data[5]} />
+                        </CCol>
+                        <CCol xs={6}>
+                          <StatWidgetB text="Total Sales" value={db_data[7]} />
+                        </CCol>
+                      </div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <CCol xs={6}>
+                          <StatWidgetA
+                            text="Daily Profit"
+                            value={db_data[6][0]}
+                            text1="Yesterday profit"
+                            value1={db_data[6][1]}
+                            text2="Last 10 days sales"
+                            value2={db_data[6][2]}
                           />
                         </CCol>
                         <CCol xs={6}>
-                          <CWidgetStatsE
-                            className="mb-3"
-                            style={{ height: '86%', width: '100%' }}
-                            chart={
-                              <CChartBar
-                                className="mx-auto"
-                                style={{ height: '30px', width: '80px' }}
-                                data={{
-                                  labels: [
-                                    'M',
-                                    'T',
-                                    'W',
-                                    'T',
-                                    'F',
-                                    'S',
-                                    'S',
-                                    'M',
-                                    'T',
-                                    'W',
-                                    'T',
-                                    'F',
-                                    'S',
-                                    'S',
-                                    'M',
-                                  ],
-                                  datasets: [
-                                    {
-                                      backgroundColor: '#321fdb',
-                                      borderColor: 'transparent',
-                                      borderWidth: 1,
-                                      data: [
-                                        41, 78, 51, 66, 74, 42, 89, 97, 87, 84, 78, 88, 67, 45, 47,
-                                      ],
-                                    },
-                                  ],
-                                }}
-                                options={{
-                                  maintainAspectRatio: false,
-                                  plugins: {
-                                    legend: {
-                                      display: false,
-                                    },
-                                  },
-                                  scales: {
-                                    x: {
-                                      display: false,
-                                    },
-                                    y: {
-                                      display: false,
-                                    },
-                                  },
-                                }}
-                              />
-                            }
-                            title="Widget title"
-                            value="89.9%"
-                          />
+                          <StatWidgetE />
                         </CCol>
-                      </CRow>
-                    </CContainer>
-                  </CRow>
-                </CCol>
-              </CRow>
-              {/* <CHeaderText className="welcome ml-xl-3" align="middle">
-                Welcome to the DineEase System
-              </CHeaderText> */}
-              {/* <CChartDoughnut
-                data={{
-                  labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
-                  datasets: [
-                    {
-                      backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-                      data: [40, 20, 80, 10],
-                    },
-                  ],
-                }}
-              /> */}
-            </CContainer>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <CCol xs={6} style={loadingStyle1}>
+                          <CSpinner />
+                        </CCol>
+                        <CCol xs={6} style={loadingStyle1}>
+                          <CSpinner />
+                        </CCol>
+                      </div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <CCol xs={6} style={loadingStyle1}>
+                          <CSpinner />
+                        </CCol>
+                        <CCol xs={6} style={loadingStyle1}>
+                          <CSpinner />
+                        </CCol>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </CCol>
+            </CRow>
           </div>
           <AppFooter />
         </div>
       </div>
-      {/* <CImage align="start" rounded src="/src/assets/logo.png" width={200} height={200} /> */}
     </>
   )
 }
