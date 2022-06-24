@@ -15,6 +15,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import LoginPhoto from '../../assets/images/login_photo.jpg'
 import CIcon from '@coreui/icons-react'
 import { cilBriefcase, cilRestaurant, cilPeople } from '@coreui/icons'
+import { connectUser, socket } from 'src/App'
 
 export default function Login() {
   const [username, setEmail] = useState('')
@@ -64,6 +65,9 @@ export default function Login() {
       result = await result.json()
       console.log('TEST')
       console.log(result[0].users_name)
+      console.log('I am here')
+      connectUser('admin', result[0].u_id)
+      console.log('I am here 2')
       setres(result[0])
       localStorage.setItem('disp_name', result[0].users_name)
       localStorage.setItem('user-info', JSON.stringify(result))

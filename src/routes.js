@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import ModalComponent from './modalComponent'
 import orderhistory from './views/manageEmployees/orderHistory/orderHistory'
 const viewInv = React.lazy(() => import('./views/manageEmployees/viewInv/viewInv'))
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
@@ -28,4 +29,26 @@ const routes = [
   { path: '/manageEmployees/viewInv', name: 'View Inventory', component: viewInv },
 ]
 
-export default routes
+// const RenderModal = (o_id, t_id, amnt) => {
+//   const [visible, setVisible] = useState(true)
+//   return (
+//     <>
+//       <CModal visible={visible} onClose={() => setVisible(false)}>
+//         <CModalHeader>
+//           <CModalTitle>Modal title</CModalTitle>
+//         </CModalHeader>
+//         <CModalBody>
+//           I will not close if you click outside me. Donot even try to press escape key.
+//         </CModalBody>
+//         <CModalFooter>
+//           <CButton color="secondary" onClick={() => setVisible(false)}>
+//             Close
+//           </CButton>
+//           <CButton color="primary">Save changes</CButton>
+//         </CModalFooter>
+//       </CModal>
+//     </>
+//   )
+// }
+
+export { routes }

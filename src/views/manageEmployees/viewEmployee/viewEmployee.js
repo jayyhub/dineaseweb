@@ -34,7 +34,8 @@ function ViewEmployee(props) {
         <div className="wrapper d-flex flex-column min-vh-100 bg-light">
           <AppHeader />
           <div className="body flex-grow-1 px-3">
-            <CContainer lg>
+            <CContainer lg style={{ height: '600px', overflow: 'scroll' }}>
+              <h3>View Employees</h3>
               <CTable striped>
                 <CTableHead>
                   <CTableRow>

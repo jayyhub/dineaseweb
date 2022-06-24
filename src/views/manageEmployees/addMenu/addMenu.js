@@ -1,72 +1,27 @@
-import PropTypes, { func } from 'prop-types'
 import React, { useEffect, useState, createRef } from 'react'
-import classNames from 'classnames'
-import {
-  CButton,
-  CButtonGroup,
-  CCard,
-  CCardBody,
-  CCardFooter,
-  CCardHeader,
-  CCol,
-  CHeaderText,
-  CImage,
-  CProgress,
-  CRow,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CContainer,
-} from '@coreui/react'
-import { rgbToHex } from '@coreui/utils'
-import { DocsLink } from 'src/components'
+import { CContainer } from '@coreui/react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../components/index'
 const ip = process.env.REACT_APP_ADDR
 
-const ThemeView = () => {
-  const [color, setColor] = useState('rgb(255, 255, 255)')
-  const ref = createRef()
+// CODE FOR AWS
+async function postImage({ image, description }) {
+  const formData = new FormData()
+  formData.append('image', image)
+  formData.append('description', description)
+  formData.append('item_id', null)
+  formData.append('request_method', 'POST')
 
-  useEffect(() => {
-    const el = ref.current.parentNode.firstChild
-    const varColor = window.getComputedStyle(el).getPropertyValue('background-color')
-    setColor(varColor)
-  }, [ref])
+  const result = await fetch('http://' + ip + ':5000/api/images', {
+    method: 'POST',
+    body: formData,
+  })
 
-  return (
-    <table className="table w-100" ref={ref}>
-      <tbody>
-        <tr>
-          <td className="text-medium-emphasis">HEX:</td>
-          <td className="font-weight-bold">{rgbToHex(color)}</td>
-        </tr>
-        <tr>
-          <td className="text-medium-emphasis">RGB:</td>
-          <td className="font-weight-bold">{color}</td>
-        </tr>
-      </tbody>
-    </table>
-  )
+  // console.log('Image Upload Ho Gayi')
+  // console.log(result)
+  //const rj = await result
+  return result
 }
-
-const ThemeColor = ({ className, children }) => {
-  const classes = classNames(className, 'theme-color w-75 rounded mb-3')
-  return (
-    <CCol xs={12} sm={6} md={4} xl={2} className="mb-4">
-      <div className={classes} style={{ paddingTop: '75%' }}></div>
-      {children}
-      <ThemeView />
-    </CCol>
-  )
-}
-
-ThemeColor.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
-}
+// CODE FOR AWS
 
 function AddMenu() {
   const [item_name, setitemname] = useState('')
@@ -78,6 +33,15 @@ function AddMenu() {
   const [icat_name, setiCatName] = useState('')
   const [item_price1, setprice] = useState('')
   const [inameerr, setierr] = useState(false)
+
+  // {CODE FOR AWS}
+  const [file, setFile] = useState()
+  const [description, setDescription] = useState('')
+  const [images, setImages] = useState([])
+  // {CODE FOR AWS}
+
+  //FOR IMAGE RENDER
+  const [x, setX] = useState(null)
 
   const [data1, setData1] = useState([])
   useEffect(() => {
@@ -109,9 +73,22 @@ function AddMenu() {
 
   const [data2, setData2] = useState([])
 
-  function saveEmp() {
+  async function saveEmp() {
+    console.log('In Inserting State')
     const item_price = Number(item_price1)
-    const image_id = 1
+    console.log('Item Price', item_price)
+    //PUT IMAGE TO CLOUD
+    let rsult = await postImage({ image: file, description })
+    //FROM THE RECIEVED KEY INSERT INTO IMAGES
+    //RECIEVE THE IMAGE_ID
+    let mk = await rsult.json()
+    console.log('FiNALL cALL')
+    console.log(mk)
+    // console.log(mk['rp'])
+    // console.log(mk['image_id'])
+    //console.log(rsult.body)
+    //USE THAT IMAGE_ID TO CREATE A NEW RECORD IN ITEMS
+    let image_id = mk
     let data = {
       item_name,
       item_price,
@@ -146,12 +123,14 @@ function AddMenu() {
     let resp = await result.json()
     if (resp === false) {
       //if item name does not exist
+      console.log('Checking Stage Passed')
       setierr(false)
       saveEmp()
     } else setierr(true)
   }
 
   function MenuAddHandler(e) {
+    e.preventDefault()
     if (/^[a-zA-Z ]*$/g.test(item_name))
       if (/^[a-zA-Z ,]*$/g.test(item_description))
         if (/^[0-9]+$/g.test(item_price1))
@@ -169,8 +148,22 @@ function AddMenu() {
       alert(item_name + ' should contain alphabets only')
       return false
     }
-    e.preventDefault()
   }
+
+  // {CODE FOR AWS}
+  const fileSelected = (event) => {
+    const file = event.target.files[0]
+    setFile(file)
+    setX(URL.createObjectURL(file))
+  }
+
+  const submit = async (event) => {
+    event.preventDefault()
+    const result = await postImage({ image: file, description })
+    //console.log('I am Clicked')
+    //setImages([])
+  }
+  // {CODE FOR AWS}
 
   return (
     <>
@@ -178,167 +171,232 @@ function AddMenu() {
         <AppSidebar />
         <div className="wrapper d-flex flex-column min-vh-100 bg-light">
           <AppHeader />
-          <div className="body flex-grow-1 px-3 m-4">
+          <div className="body flex-grow-1 px-3 m-2">
             <CContainer lg>
               <h3>
                 <u>Add a new Menu Item</u>
               </h3>
               {/* <form className="row g-3" onSubmit={saveEmp}> */}
-              <form className="row g-3" onSubmit={MenuAddHandler}>
-                <div className="col-md-6">
-                  <label htmlFor="inputEmail4" className="form-label">
-                    Item Name
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    required
-                    //pattern="[A-Za-z]+"
-                    value={item_name}
-                    onChange={(e) => {
-                      setitemname(e.target.value)
-                    }}
-                    id="inputEmail4"
-                  ></input>
-                  {inameerr ? <div style={{ color: 'red' }}>Item Name Already Exist</div> : <></>}
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="inputState" className="form-label">
-                    Menu Status
-                  </label>
-                  <select
-                    id="inputState"
-                    className="form-select"
-                    value={menu_status}
-                    onChange={(e) => {
-                      setstatus(e.target.value)
-                    }}
-                  >
-                    <option selected>Choose...</option>
-                    <option>available</option>
-                    <option>unavailable</option>
-                  </select>
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="inputPassword4" className="form-label">
-                    Item Description
-                  </label>
-                  {/* <input
-                    type="text"
-                    className="form-control"
-                    required
-                    //pattern="[A-Za-z]+"
-                    value={item_description}
+              <div className="row">
+                <form className="row g-1" onSubmit={MenuAddHandler}>
+                  <div className="col">
+                    <div className="col-md-12">
+                      <label htmlFor="inputEmail4" className="form-label">
+                        Item Name
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        required
+                        //pattern="[A-Za-z]+"
+                        value={item_name}
+                        onChange={(e) => {
+                          setitemname(e.target.value)
+                        }}
+                        id="inputEmail4"
+                      ></input>
+                      {inameerr ? (
+                        <div style={{ color: 'red' }}>Item Name Already Exist</div>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                    <div className="col-md-12">
+                      <label htmlFor="inputState" className="form-label">
+                        Menu Status
+                      </label>
+                      <select
+                        id="inputState"
+                        className="form-select"
+                        value={menu_status}
+                        onChange={(e) => {
+                          setstatus(e.target.value)
+                        }}
+                      >
+                        <option selected>Choose...</option>
+                        <option>available</option>
+                        <option>unavailable</option>
+                      </select>
+                    </div>
+                    <div className="col-md-12">
+                      <label htmlFor="inputPassword4" className="form-label">
+                        Item Description
+                      </label>
+                      {/* <input
+                        type="text"
+                        className="form-control"
+                        required
+                        //pattern="[A-Za-z]+"
+                        value={item_description}
+                        style={{
+                          height: '100px',
+                        }}
+                        onChange={(e) => {
+                          setdesc(e.target.value)
+                        }}
+                        id="inputPassword4"
+                      ></input> */}
+                      <textarea
+                        type="text"
+                        cols="40"
+                        rows="4"
+                        className="form-control"
+                        required
+                        //pattern="[A-Za-z]+"
+                        value={item_description}
+                        onChange={(e) => {
+                          setdesc(e.target.value)
+                        }}
+                        id="inputPassword4"
+                      ></textarea>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <label htmlFor="inputState" className="form-label">
+                          Food Category
+                        </label>
+                        <select
+                          id="inputState"
+                          className="form-select"
+                          //value={icategory_id}
+                          value={cat_name}
+                          onChange={(e) => {
+                            data1.map((item) => {
+                              if (item.category_name === e.target.value) {
+                                //console.log('Hello')
+                                //console.log(item.category_id)
+                                setCatName(e.target.value)
+                                setfood(item.category_id)
+                                fetchicat(item.category_id)
+                              }
+                            })
+                          }}
+                        >
+                          <option selected>Choose...</option>
+                          {data1.map((items, index) => (
+                            <option key={index}> {items.category_name} </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="col-md-6">
+                        <label htmlFor="inputState" className="form-label">
+                          Item Category
+                        </label>
+                        <select
+                          id="inputState"
+                          className="form-select"
+                          //value={category_id}
+                          value={icat_name}
+                          onChange={(e) => {
+                            data2.map((item) => {
+                              if (item.icategory_name === e.target.value) {
+                                //console.log('Hello')
+                                //console.log(item.icategory_id)
+                                setiCatName(e.target.value)
+                                setcat(item.icategory_id)
+                              }
+                            })
+                          }}
+                        >
+                          <option selected>Choose...</option>
+                          {data2.map((items, index) => (
+                            <option key={index}> {items.icategory_name} </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-4">
+                      <label htmlFor="inputZip" className="form-label">
+                        Item Price
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        required
+                        //pattern="[1-9]{1}[0-9]{9}"
+                        title="Enter 10 digit numbers without 0"
+                        value={item_price1}
+                        id="inputZip"
+                        onChange={(e) => {
+                          setprice(e.target.value)
+                        }}
+                      ></input>
+                    </div>
+                  </div>
+                  <div
+                    className="col"
                     style={{
-                      height: '100px',
-                    }}
-                    onChange={(e) => {
-                      setdesc(e.target.value)
-                    }}
-                    id="inputPassword4"
-                  ></input> */}
-                  <textarea
-                    type="text"
-                    cols="40"
-                    rows="4"
-                    className="form-control"
-                    required
-                    //pattern="[A-Za-z]+"
-                    value={item_description}
-                    onChange={(e) => {
-                      setdesc(e.target.value)
-                    }}
-                    id="inputPassword4"
-                  ></textarea>
-                </div>
-                <div className="col-md-3">
-                  <label htmlFor="inputState" className="form-label">
-                    Food Category
-                  </label>
-                  <select
-                    id="inputState"
-                    className="form-select"
-                    //value={icategory_id}
-                    value={cat_name}
-                    onChange={(e) => {
-                      data1.map((item) => {
-                        if (item.category_name === e.target.value) {
-                          //console.log('Hello')
-                          //console.log(item.category_id)
-                          setCatName(e.target.value)
-                          setfood(item.category_id)
-                          fetchicat(item.category_id)
-                        }
-                      })
+                      // backgroundColor: 'white',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      display: 'flex',
+                      //height: '200px',
                     }}
                   >
-                    <option selected>Choose...</option>
-                    {data1.map((items, index) => (
-                      <option key={index}> {items.category_name} </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col-md-3">
-                  <label htmlFor="inputState" className="form-label">
-                    Item Category
-                  </label>
-                  <select
-                    id="inputState"
-                    className="form-select"
-                    //value={category_id}
-                    value={icat_name}
-                    onChange={(e) => {
-                      data2.map((item) => {
-                        if (item.icategory_name === e.target.value) {
-                          //console.log('Hello')
-                          //console.log(item.icategory_id)
-                          setiCatName(e.target.value)
-                          setcat(item.icategory_id)
-                        }
-                      })
-                    }}
-                  >
-                    <option selected>Choose...</option>
-                    {data2.map((items, index) => (
-                      <option key={index}> {items.icategory_name} </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col-md-2">
-                  <label htmlFor="inputZip" className="form-label">
-                    Item Price
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    required
-                    //pattern="[1-9]{1}[0-9]{9}"
-                    title="Enter 10 digit numbers without 0"
-                    value={item_price1}
-                    id="inputZip"
-                    onChange={(e) => {
-                      setprice(e.target.value)
-                    }}
-                  ></input>
-                </div>
-                <div
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    display: 'flex',
-                  }}
-                >
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
+                    <div className="row d-flex justify-content-center">
+                      <div
+                        className="d-flex justify-content-center"
+                        // style={{ backgroundColor: 'red' }}
+                        style={{
+                          border: '3px Solid Black',
+                          width: '500px',
+                          height: '250px',
+                          marginBottom: '5px',
+                          borderRadius: '7px',
+                          //backgroundColor: 'red',
+                        }}
+                      >
+                        <img src={x} alt="add Menu" />
+                        {/* HELLO */}
+                      </div>
+                      <div
+                        className="d-flex justify-content-center"
+                        // style={{ backgroundColor: 'blue' }}
+                        style={{
+                          marginBottom: '5px',
+                          marginTop: '5px',
+                        }}
+                      >
+                        <input onChange={fileSelected} type="file" accept="image/*"></input>
+                        {/* HELLO */}
+                      </div>
+                      <div
+                        className="d-flex justify-content-center"
+                        // style={{ backgroundColor: 'green' }}
+                        style={{
+                          marginTop: '5px',
+                        }}
+                      >
+                        <input
+                          style={{ borderRadius: '5px' }}
+                          placeholder="Description For Image"
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
+                          type="text"
+                        ></input>
+                        {/* HELLO */}
+                      </div>
+                    </div>
+                  </div>
+                  <div
                     style={{
-                      width: '200px',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      display: 'flex',
                     }}
                   >
-                    Add Menu
-                  </button>
-                </div>
-              </form>
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      style={{
+                        width: '200px',
+                      }}
+                    >
+                      Add Menu
+                    </button>
+                  </div>
+                </form>
+              </div>
             </CContainer>
           </div>
           <AppFooter />

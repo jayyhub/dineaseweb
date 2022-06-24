@@ -35,6 +35,20 @@ import { DocsLink } from 'src/components'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../components/index'
 const ip = process.env.REACT_APP_ADDR
 
+// CODE FOR AWS
+async function postImage({ image, description }) {
+  const formData = new FormData()
+  formData.append('image', image)
+  formData.append('description', description)
+
+  const result = await fetch('http://' + ip + ':5000/api/images', {
+    method: 'POST',
+    body: formData,
+  })
+  return result.data
+}
+// CODE FOR AWS
+
 const ThemeView = () => {
   const [color, setColor] = useState('rgb(255, 255, 255)')
   const ref = createRef()
@@ -193,6 +207,37 @@ function AddInventory() {
     })
   }
 
+  // {CODE FOR WEBSOCKETS}
+  // const socket = new WebSocket('ws://' + ip + ':3000')
+
+  // const apiCall = {
+  //   event: 'bts:subscribe',
+  //   data: { channel: 'order_book_btcusd' },
+  // }
+
+  // socket.onopen = (event) => {
+  //   socket.send(
+  //     JSON.stringify({
+  //       type: 'connection buildup',
+  //       content: ['admin', 1],
+  //     }),
+  //   )
+  // }
+
+  // socket.onmessage = function (event) {
+  //   const json = JSON.parse(event.data)
+  //   try {
+  //     if ((json.event = 'data')) {
+  //       console.log(json.data)
+  //     }
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
+
+  //socket.close()
+  // {CODE FOR WEBSOCKETS}
+
   // {CODE FOR AWS}
   const fileSelected = (event) => {
     const file = event.target.files[0]
@@ -201,7 +246,8 @@ function AddInventory() {
 
   const submit = async (event) => {
     event.preventDefault()
-    console.log('I am Clicked')
+    const result = await postImage({ image: file, description })
+    //console.log('I am Clicked')
     //setImages([])
   }
   // {CODE FOR AWS}
@@ -452,7 +498,7 @@ function AddInventory() {
                   />
                   <CFormFeedback invalid>Please select a date</CFormFeedback>
                 </CCol>
-                <CCol md={3}>
+                {/* <CCol md={3}>
                   <label htmlFor="InventoryValidation05" className="form-label">
                     Date of Expiry
                   </label>
@@ -467,7 +513,7 @@ function AddInventory() {
                     }}
                   />
                   <CFormFeedback invalid>Please select a date</CFormFeedback>
-                </CCol>
+                </CCol> */}
                 <div
                   style={{
                     justifyContent: 'center',
@@ -488,7 +534,7 @@ function AddInventory() {
               </CForm>
             </CContainer>
             {/* {CODE FOR AWS CONFIGURATION} */}
-            <form onSubmit={submit}>
+            {/* <form onSubmit={submit}>
               <input onChange={fileSelected} type="file" accept="image/*"></input>
               <input
                 value={description}
@@ -502,7 +548,7 @@ function AddInventory() {
               <div key={image}>
                 <img src={image}></img>
               </div>
-            ))}
+            ))} */}
             {/* {CODE FOR AWS CONFIGURATION} */}
           </div>
           <AppFooter />

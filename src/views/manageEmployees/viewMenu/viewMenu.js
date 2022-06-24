@@ -22,11 +22,21 @@ import {
   CInputGroupText,
   CFormCheck,
   CFormFeedback,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
+  CModalFooter,
 } from '@coreui/react'
 import { useEffect, useState } from 'react'
 import { DocsLink } from 'src/components'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../../../components/index'
+
 import { RegExp } from 'core-js'
+import { func } from 'prop-types'
+
+const ip = process.env.REACT_APP_ADDR
+
 function ViewMenu() {
   //RESPONSE DETAILS
   const [item_id, setitemId] = useState(null)
@@ -55,7 +65,31 @@ function ViewMenu() {
   const [formerr, setformerr] = useState([false, false, false])
   const [r, setr] = useState([])
   const [indiv_data, setIndivData] = useState([])
-  const ip = process.env.REACT_APP_ADDR
+
+  const [visible1, setVisible1] = useState(false)
+  const [id, setId] = useState()
+
+  // {CODE FOR AWS}
+  const [file, setFile] = useState()
+  const [description, setDescription] = useState('')
+  const [images, setImages] = useState([])
+  // {CODE FOR AWS}
+
+  // CODE FOR AWS
+  async function postImage({ image, description }) {
+    const formData = new FormData()
+    formData.append('image', image)
+    formData.append('description', description)
+    formData.append('item_id', id)
+    formData.append('request_method', 'PUT')
+
+    const result = await fetch('http://' + ip + ':5000/api/images', {
+      method: 'POST',
+      body: formData,
+    })
+    return result.data
+  }
+  // CODE FOR AWS
 
   useEffect(() => {
     fetch(`http://` + ip + `:5000/api/amenu`).then((result) => {
@@ -270,6 +304,20 @@ function ViewMenu() {
     })
   }
 
+  // {CODE FOR AWS}
+  const fileSelected = (event) => {
+    const file = event.target.files[0]
+    setFile(file)
+  }
+
+  const submit = async (event) => {
+    event.preventDefault()
+    const result = await postImage({ image: file, description })
+    //console.log('I am Clicked')
+    //setImages([])
+  }
+  // {CODE FOR AWS}
+
   return (
     <>
       <div>
@@ -278,6 +326,36 @@ function ViewMenu() {
         <div className="wrapper d-flex flex-column min-vh-100 bg-light">
           <AppHeader />
           <div className="body flex-grow-1 px-3">
+            <CModal backdrop="static" visible={visible1} onClose={() => setVisible1(false)}>
+              <CModalHeader>
+                <CModalTitle>{id}</CModalTitle>
+              </CModalHeader>
+              <CModalBody>
+                {/* {CODE FOR AWS CONFIGURATION} */}
+                <form onSubmit={submit}>
+                  <input onChange={fileSelected} type="file" accept="image/*"></input>
+                  <input
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    type="text"
+                  ></input>
+                  <button type="submit">Submit</button>
+                </form>
+
+                {images.map((image) => (
+                  <div key={image}>
+                    <img src={image}></img>
+                  </div>
+                ))}
+                {/* {CODE FOR AWS CONFIGURATION} */}
+              </CModalBody>
+              <CModalFooter>
+                <CButton color="secondary" onClick={() => setVisible1(false)}>
+                  Close
+                </CButton>
+                <CButton color="primary">Save changes</CButton>
+              </CModalFooter>
+            </CModal>
             <CContainer xl>
               <h3>Menu List</h3>
               <div className="half">
@@ -310,6 +388,14 @@ function ViewMenu() {
                           >
                             Edit
                           </CButton>
+                          {/* <button
+                            onClick={() => {
+                              setVisible1(!visible1)
+                              setId(item.item_id)
+                            }}
+                          >
+                            Submit Pic
+                          </button> */}
                         </CTableDataCell>
                       </CTableRow>
                     ))}

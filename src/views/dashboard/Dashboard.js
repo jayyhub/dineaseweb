@@ -64,6 +64,7 @@ import StatWidgetE from './statWidgetE'
 import BarChart from './barChart'
 import StatWidgetA1 from './statWidgetA1'
 import AnimatedNumber from 'react-animated-numbers'
+import ModalComponent from 'src/modalComponent'
 
 const ip = process.env.REACT_APP_ADDR
 
@@ -131,7 +132,8 @@ const Dashboard = (props) => {
         <AppSidebar />
         <div className="wrapper d-flex flex-column min-vh-100 bg-light">
           <AppHeader />
-          <div className="body flex-grow-1 px-3">
+          <div className="body flex-grow-1 px-4">
+            {/* <ModalComponent /> */}
             <CRow>
               <CCol xl={7} style={{ padding: '5px' }}>
                 <h1>Dashboard</h1>
@@ -164,7 +166,7 @@ const Dashboard = (props) => {
                       <CCol
                         xs={4}
                         style={{
-                          backgroundColor: 'black',
+                          //backgroundColor: 'black',
                           padding: '0px 1px 0px 1px',
                           display: 'flex',
                           alignItems: 'center',
@@ -174,7 +176,7 @@ const Dashboard = (props) => {
                         <div
                           style={{
                             borderRadius: '12px',
-                            backgroundColor: '#DDDDDD',
+                            //backgroundColor: '#DDDDDD',
                             padding: '10px',
                             boxShadow:
                               'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px',
@@ -205,7 +207,7 @@ const Dashboard = (props) => {
                       <CCol
                         xs={4}
                         style={{
-                          backgroundColor: 'brown',
+                          //backgroundColor: 'brown',
                           padding: '0px 2px 0px 1px',
                           display: 'flex',
                           alignItems: 'center',

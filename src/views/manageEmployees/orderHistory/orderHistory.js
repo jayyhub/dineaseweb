@@ -109,21 +109,21 @@ function Orderhistory() {
                     <CTableHeaderCell scope="col">Total Amount</CTableHeaderCell>
                     <CTableHeaderCell
                       scope="col"
-                      style={{
-                        backgroundColor: 'red',
-                        // height: '150px',
-                        // width: '150px',
-                      }}
+                      // style={{
+                      //   backgroundColor: 'red',
+                      //   // height: '150px',
+                      //   // width: '150px',
+                      // }}
                     >
                       <span>Payment Method</span>
-                      <CContainer>
+                      {/* <CContainer>
                         <CRow>
                           <button>Hello</button>
                         </CRow>
                         <CRow>
                           <button>Hello</button>
                         </CRow>
-                      </CContainer>
+                      </CContainer> */}
                       {/* <CRow>
                         <CIcon
                           icon={cilChevronTop}
